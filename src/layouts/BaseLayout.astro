@@ -1,0 +1,30 @@
+---
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import StarBackground from '../components/StarBackground.astro';
+/* ADD THIS IMPORT: */
+import '../styles/global.css';
+
+const { title } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-white/20 selection:text-white">
+    
+    <StarBackground />
+    
+    <main class="w-full relative min-h-screen pb-24">
+      <slot />
+    </main>
+
+    <Navigation />
+    <Footer />
+    
+    <!-- You can remove the <style is:global> block since it is now in global.css -->
+  </body>
+</html>

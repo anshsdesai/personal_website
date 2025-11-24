@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { FileText } from 'lucide-astro';
+---
+
+<BaseLayout title="CV">
+  <div class="max-w-3xl mx-auto pt-10 px-6 relative z-10 animate-fade-in-up">
+    <div class="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl">
+      <div class="flex justify-between items-start mb-10">
+        <div>
+          <h2 class="text-3xl font-bold text-white mb-2">Curriculum Vitae</h2>
+          <p class="text-slate-400">Last updated: November 2025</p>
+        </div>
+        <button class="flex items-center gap-2 px-4 py-2 bg-white text-slate-900 rounded-lg font-bold hover:bg-slate-200 transition-colors">
+          <FileText size="18" /> Download PDF
+        </button>
+      </div>
+
+      <div class="space-y-10">
+        <section>
+          <h3 class="text-white font-bold uppercase tracking-wider mb-4 text-sm opacity-50">Education</h3>
+          <div class="border-l-2 border-white/20 pl-6 space-y-6">
+            <div>
+              <h4 class="text-white text-lg font-semibold">Ph.D. Physics</h4>
+              <p class="text-slate-400">University of California, Berkeley</p>
+              <p class="text-slate-500 text-sm">Expected 2026</p>
+            </div>
+            <div>
+              <h4 class="text-white text-lg font-semibold">B.S. Physics, B.S. Mathematics</h4>
+              <p class="text-slate-400">MIT</p>
+              <p class="text-slate-500 text-sm">2020</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="text-white font-bold uppercase tracking-wider mb-4 text-sm opacity-50">Experience</h3>
+          <div class="border-l-2 border-white/20 pl-6 space-y-6">
+            <div>
+              <h4 class="text-white text-lg font-semibold">Graduate Research Assistant</h4>
+              <p class="text-slate-400">Lawrence Berkeley National Laboratory</p>
+              <p class="text-slate-500 text-sm mb-2">2021 - Present</p>
+              <ul class="list-disc list-inside text-slate-400 text-sm space-y-1">
+                <li>Leading the data quality analysis for the XENONnT experiment.</li>
+                <li>Developed ML algorithms for signal-background discrimination.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,25 @@
+---
+import { getImage } from 'astro:assets';
+import myBackground from '../assets/bullet_cluster.jpg';
+const optimizedBackground = await getImage({ src: myBackground, format: 'webp' });
+const backgroundUrl = `url(${myBackground.src})`;
+
+---
+<div >
+    <style define:vars={{ backgroundUrl }}>
+    body { /* or a specific element like a div */
+      background-image: var(--backgroundUrl);
+      background-size: cover; /* Optional: Adjust as needed */
+      background-position: center; /* Optional: Adjust as needed */
+    }
+  </style>
+<section class="hero">
+
+<div class="hero-content">
+    <h1>Ansh Desai, Ph.D Candidate</h1>
+    <p>Advancing experimental dark matter detection through cutting-edge research and innovative technology at the intersection of particle physics and cosmology.</p>
+    <a href="#research" class="cta-button">Explore My Research</a>
+</div>
+</section>
+
+</div>

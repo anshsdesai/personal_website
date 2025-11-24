@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { FileText } from 'lucide-astro';
+
+const projects = [
+  {
+    title: "WIMP Sensitivity in Liquid Xenon",
+    role: "Analysis Lead",
+    desc: "Developed a new statistical framework for background discrimination in multi-ton detectors. Improved low-mass WIMP sensitivity by 15%.",
+    tags: ["Python", "Statistics", "Data Analysis"]
+  },
+  {
+    title: "Neutron Veto Hardware",
+    role: "Hardware Engineer",
+    desc: "Designed and assembled the photomultiplier tube (PMT) arrays for the outer neutron veto system. Conducted cryogenic stress testing.",
+    tags: ["Hardware", "Cryogenics", "CAD"]
+  },
+  {
+    title: "Background Modeling (Geant4)",
+    role: "Simulation",
+    desc: "Simulated radiogenic neutron backgrounds from detector materials to establish the ultimate sensitivity floor for the next generation experiment.",
+    tags: ["C++", "Geant4", "Monte Carlo"]
+  }
+];
+---
+
+<BaseLayout title="Research">
+  <div class="max-w-5xl mx-auto pt-10 px-6 relative z-10 animate-fade-in-up">
+    <h2 class="text-3xl font-bold text-white mb-2 pl-1">Research & Publications</h2>
+    <p class="text-slate-500 mb-10 pl-1">Exploring the particle nature of the universe.</p>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {projects.map((proj) => (
+        <div class="bg-slate-900/40 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:border-white/30 transition-all hover:-translate-y-1 group">
+          <h3 class="text-xl font-bold text-slate-200 mb-2 group-hover:text-white transition-colors">{proj.title}</h3>
+          <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">{proj.role}</span>
+          <p class="text-slate-400 mt-4 text-sm leading-relaxed mb-6">
+            {proj.desc}
+          </p>
+          <div class="flex flex-wrap gap-2 mt-auto">
+            {proj.tags.map(tag => (
+              <span class="px-2 py-1 bg-white/5 text-slate-300 text-xs rounded-md border border-white/5">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-16 border-t border-white/10 pt-10">
+      <h3 class="text-xl font-bold text-white mb-6">Selected Publications</h3>
+      <ul class="space-y-4">
+        {[1, 2, 3].map((i) => (
+          <li class="flex gap-4 text-slate-400 hover:bg-white/5 p-4 rounded-lg transition-colors border border-transparent hover:border-white/5">
+            <FileText class="shrink-0 text-slate-200" size="20" />
+            <div>
+              <h4 class="text-slate-200 font-medium hover:text-white cursor-pointer">
+                First Results from the XYZ Experiment: Constraints on Spin-Independent Interactions
+              </h4>
+              <p class="text-sm mt-1 text-slate-500">Physical Review Letters, 2024</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

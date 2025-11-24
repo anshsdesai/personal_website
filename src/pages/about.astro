@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { User, Zap, Github, Linkedin, Mail } from 'lucide-astro';
+
+const skills = ['Geant4 Simulation', 'Python & C++', 'Cryogenics', 'Vacuum Systems', 'Bayesian Stats', 'CAD Design'];
+---
+
+<BaseLayout title="About Me">
+  <div class="max-w-5xl mx-auto pt-10 px-6 relative z-10 animate-fade-in-up">
+    <h2 class="text-3xl font-bold text-white mb-8">About Me</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(180px,auto)]">
+      
+      {/* Main Bio */}
+      <div class="md:col-span-2 md:row-span-2 bg-slate-900/50 p-8 rounded-3xl border border-white/10 hover:border-white/20 transition-colors flex flex-col justify-between">
+        <div class="space-y-4">
+          <h3 class="text-xl font-bold text-white flex items-center gap-2">
+            <User size="20" /> The Researcher
+          </h3>
+          <p class="text-slate-400 leading-relaxed text-lg">
+            I am a Ph.D. candidate specializing in direct detection of Dark Matter. My work focuses on the development of ultra-low background environments and the analysis of signals in liquid xenon time projection chambers (TPCs).
+          </p>
+          <p class="text-slate-400 leading-relaxed text-lg">
+            When you're dealing with events that happen merely a handful of times per year (if at all), precision is everything. I spend my days designing veto systems, simulating background radiation with Geant4, and getting my hands cold with cryogenic hardware.
+          </p>
+        </div>
+      </div>
+
+      {/* Skills */}
+      <div class="md:col-span-1 md:row-span-2 bg-slate-900/50 p-6 rounded-3xl border border-white/10 hover:border-white/20 transition-colors">
+        <h3 class="text-white font-bold mb-6 flex items-center">
+          <Zap size="18" class="text-white mr-2" /> Technical Arsenal
+        </h3>
+        <div class="space-y-3">
+          {skills.map((skill) => (
+            <div class="group flex items-center p-2 rounded-lg hover:bg-white/5 transition-colors">
+              <div class="w-1.5 h-1.5 bg-slate-500 group-hover:bg-white rounded-full mr-3 transition-colors"></div>
+              <span class="text-slate-400 group-hover:text-white text-sm transition-colors">{skill}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Philosophy */}
+      <div class="md:col-span-2 bg-slate-900/50 p-6 rounded-3xl border border-white/10 hover:border-white/20 transition-colors flex items-center">
+        <div>
+           <h3 class="text-white font-bold mb-2">Philosophy</h3>
+           <p class="text-slate-400 italic">
+             "Science communication is vital. I strive to make the complex world of particle physics accessible without diluting the physics."
+           </p>
+        </div>
+      </div>
+
+      {/* Socials */}
+      <div class="md:col-span-1 bg-white text-slate-950 p-6 rounded-3xl border border-white/10 flex flex-col justify-center items-center text-center">
+        <h3 class="font-bold mb-4">Let's Connect</h3>
+        <div class="flex gap-4">
+          <a href="#" class="p-2 bg-slate-200 hover:bg-slate-300 rounded-full transition-colors"><Github size="20" /></a>
+          <a href="#" class="p-2 bg-slate-200 hover:bg-slate-300 rounded-full transition-colors"><Linkedin size="20" /></a>
+          <a href="#" class="p-2 bg-slate-200 hover:bg-slate-300 rounded-full transition-colors"><Mail size="20" /></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</BaseLayout>
