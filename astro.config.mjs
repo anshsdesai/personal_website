@@ -1,15 +1,19 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind'; // 1. Import the Tailwind integration
 
-import preact from '@astrojs/preact';
+// You may need to run 'npm install @astrojs/tailwind' if this package is missing!
 
-import tailwindcss from '@tailwindcss/vite';
-
-// https://astro.build/config
 export default defineConfig({
-  integrations: [preact()],
+  // 2. Add the Tailwind integration to the integrations array
+  integrations: [tailwind({
+    // Optional: You can pass options here, but usually the default is fine
+  })],
+  
+  // Since you are using a GitHub link (which implies static hosting), 
+  // ensuring the output is 'static' and setting the base path can be helpful.
+  output: 'static',
+  // base: '/', // Uncomment and adjust this if your site is hosted in a subdirectory (e.g., /personal-website/)
 
-  vite: {
-    plugins: [tailwindcss()]
-  }
+  // You can also add other settings here, like:
+  // site: 'https://example.com',
 });
