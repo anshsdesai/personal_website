@@ -1,14 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Camera } from 'lucide-astro';
+import oregonCoast from '../img/photos/oregon_coast.jpeg';
+import costaRicaForest from '../img/photos/costa_rica_forest.jpeg';
+import japanvending from '../img/photos/japan_vending_machine.jpeg';
+import littleSkellig from '../img/photos/little-skellig.JPG';
+import milkyWay from '../img/photos/milky_way.jpg';
+import northernlightrain from '../img/photos/northern_light_rain.jpeg';
+import northernlights from '../img/photos/northern_lights.jpeg';
+import oregonBeach from '../img/photos/oregon_beach.jpeg';
+import skyPond from '../img/photos/sky-pond.JPG';
+import sunsetDune from '../img/photos/sunset_dunes.jpg';
+import tiger from '../img/photos/tiger.JPG';
+import tokyo_street from '../img/photos/tokyo_street.jpeg';
+import wadiRum from '../img/photos/wadi_rum.jpeg';
+
+
+import { Image } from 'astro:assets';
 
 const photos = [
-  { type: 'Landscape', color: 'bg-slate-800', desc: 'Astrophotography: Milky Way' },
-  { type: 'Urban', color: 'bg-zinc-800', desc: 'Urban Decay: Detroit' },
-  { type: 'Macro', color: 'bg-stone-800', desc: 'Circuit Boards' },
-  { type: 'Nature', color: 'bg-neutral-800', desc: 'Forest Mist' },
-  { type: 'Landscape', color: 'bg-gray-800', desc: 'Alpine Lakes' },
-  { type: 'Portrait', color: 'bg-slate-900', desc: 'Lab Partners' },
+  { image: oregonCoast, type: 'Landscape', src:oregonCoast.src, desc: 'Pacific Coast, June 2024'},
+  { image: costaRicaForest, type: 'Landscape', src:costaRicaForest.src, desc: 'Volcan Arenal, Costa Rica, December 2024'},
+  { image: littleSkellig, type: 'Landscape', src:littleSkellig.src, desc: 'Skellig Islands, Ireland, August 2019'},
+  { image: wadiRum, type: 'Landscape', src:wadiRum.src, desc: 'Wadi Rum, Jordan, December 2023'},
+  { image: oregonBeach, type: 'Landscape', src:oregonBeach.src, desc: 'Pacific Coast, June 2024'},
+  { image: skyPond, type: 'Landscape', src:skyPond.src, desc: 'Sky Pond, Colorado, June 2019'},
+  { image: sunsetDune, type: 'Landscape', src:sunsetDune.src, desc: 'Great Sand Dunes, Colorado, October 2020'},
+  { image: milkyWay, type: 'Astro', src:milkyWay.src, desc: 'The view from Mt. Chapin, Colorado, August 2022'},
+  { image: northernlightrain, type: 'Astro', src:northernlightrain.src, desc: 'Rural Illinois, October 2024'},
+  { image: northernlights, type: 'Astro', src:northernlights.src, desc: 'Rural Illinois, October 2024'},
+  { image: tiger, type: 'Wildlife', src:tiger.src, desc: 'Tadoba Tiger Reserve, India, December 2019'},
+  { image: tokyo_street, type: 'Urban', src:tokyo_street.src, desc: 'Tokyo, Japan, December 2023'},
+  { image: japanvending, type: 'Urban', src:japanvending.src, desc: 'Odawara, Japan, December 2023'},
+
 ];
 ---
 
@@ -20,10 +44,21 @@ const photos = [
     <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
       {photos.map((photo) => (
         <div class="break-inside-avoid relative group overflow-hidden rounded-xl bg-slate-900 border border-white/5">
+            {/* <Image src={photo.image} alt={photo.desc} /> */}
+            <a href={photo.src} target="_blank">
+                <Image
+                    src={photo.image}
+                    // width={600}
+                    // height={400}
+                    alt={photo.desc}
+                    format="webp"
+                    quality={85}
+                />
+                </a>
           {/* Placeholder for actual image */}
-          <div class={`w-full h-64 ${photo.color} opacity-80 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center`}>
+          {/* <div class={`w-full h-64 ${photo.color} opacity-80 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center`}>
             <Camera class="text-white/20 group-hover:text-white/40 transition-colors" size="48" />
-          </div>
+          </div> */}
           
           <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
             <span class="text-white text-xs font-bold uppercase tracking-widest opacity-70">{photo.type}</span>

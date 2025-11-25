@@ -8,13 +8,13 @@ import gscholarSVG from '../icons/Google_Scholar_logo.svg';
 import orcidSVG from '../icons/ORCID_iD.svg';
 
 // --- PLACEHOLDER DATA ---
-const bio = "Hello! I am a 4th year Ph.D. candidate at the University of Oregon. I'm an experimental particle physicist focused on probing the nature of dark matter. I look for dark matter particles in our galaxy by using ultra-sensitive detectors placed deep underground. I also search for dark matter produced in high energy collisions at the Large Hadron Collider.";
+const bio = "Hello! I am a 4th year Ph.D. candidate at the University of Oregon. I'm an experimental particle physicist focused on probing the nature of dark matter. I look for dark matter particles in our galaxy by using ultra-sensitive detectors placed deep underground. I also search for dark matter produced in high energy collisions at the Large Hadron Collider. I've authored or co-authored 10+ peer-reviewed publications, including articles in PRL and JHEP. I have been lucky enough to be a part of some really talented teams of scientists that are driving new constraints in dark matter parameter space. ";
 const now = "Currently leading the dark photon analysis for FASER, studying charge traps in SENSEI CCDs, working on the fourth dark matter search with SENSEI and writing my dissertation.";
 // const photoLink = "../img/uncropped_ansh.jpg";
 import AnshPhoto from "../img/cropped_ansh.jpeg";
 const timezone = "America/Eugene";
 const publications = {
-    summary: "Authored or co-authored 10+ peer-reviewed publications, including articles in PRL and JHEP. I have been lucky enough to be a part of some really talented teams of scientists that are driving new constraints in dark matter parameter space. For more information on my papers, feel free to check out the links below or get in touch!",
+    summary: "For more information on my papers, feel free to check out the links below or get in touch!",
     links: [
         { name: 'ORCID', url: 'https://orcid.org/0000-0002-5447-8304', icon: orcidSVG,color: 'text-yellow-400'},
         { name: 'inspirehep', url: 'https://inspirehep.net/authors/2789549', icon: InspireHepSVG,color: 'text-yellow-400'},
@@ -42,12 +42,12 @@ const otherInterests = [
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]">
       
       <!-- Bio Box (Span 2 Columns) -->
-      <div class="md:col-span-2 bento-card p-8 rounded-xl flex flex-col justify-center">
-        <h3 class="text-2xl font-bold mb-4 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+      <div class="md:col-span-2 bento-card p-8 rounded-xl flex flex-col">
+        <h3 class="text-2xl font-bold mb-4 flex items-center align-top gap-2" style={`color: hsl(var(--color-accent-soft))`}>
             <User size="24" /> 
             Abstract
         </h3>
-        <p class="leading-relaxed text-xl" style={`color: hsl(var(--color-text-primary))`}>
+        <p class="leading-relaxed text-base font-extralight" style={`color: hsl(var(--color-text-primary))`}>
             {bio}
         </p>
       </div>
@@ -62,17 +62,17 @@ const otherInterests = [
         </div>
       </a> -->
       <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-between">
-        <Image src={AnshPhoto} alt="A starry night sky." />
+        <Image src={AnshPhoto} alt="A photo of Ansh." />
       </div>
       
       <!-- "Now" Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center">
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col align-top">
         
         <h3 class="text-xl font-bold mb-3 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
           <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             Now
         </h3>
-        <p class="italic text-lg" style={`color: hsl(var(--color-text-primary))`}>
+        <p class="text-base font-extralight" style={`color: hsl(var(--color-text-primary))`}>
             {now}
         </p>
       </div>
@@ -91,31 +91,33 @@ const otherInterests = [
       </div>
 
       <!-- Publications Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-between">
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col align-top">
         <div>
             <h3 class="text-xl font-bold mb-3 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
                 <Mail size="20" /> Publications
             </h3>
-            <p class="text-sm mb-4 leading-relaxed" style={`color: hsl(var(--color-text-primary))`}>
+            <p class="text-base font-extralight mb-4 leading-relaxed" style={`color: hsl(var(--color-text-primary))`}>
                 {publications.summary}
             </p>
         </div>
         
         <div class="flex gap-4 justify-center">
             {publications.links.map((link) => (
-              <a href={link.url} aria-label={link.name}>
-            <link.icon class="w-10 h-10" />
+              <a href={link.url} aria-label={link.name} class="p-3 bg-slate-700 rounded-full transition-all duration-300 
+                        hover:scale-105 hover:bg-slate-600 shadow-lg hover:shadow-xl 
+                        hover:shadow-[--color-accent-strong]/20 ring-2 ring-transparent hover:ring-[--color-accent-strong]/50">
+            <link.icon class="w-8 h-8 " />
             </a>
             ))}
         </div>
       </div>
 
       <!-- Other Interests Box (Span 2 Columns) -->
-      <div class="md:col-span-2 bento-card p-6 rounded-xl">
+      <div class="md:col-span-2 bento-card p-6 rounded-xl align-top">
         <h3 class="font-bold text-xl mb-3 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
             <Heart size="20" /> Other Interests
         </h3>
-        <ul class="list-disc list-inside space-y-2 text-lg pl-2" style={`color: hsl(var(--color-text-primary))`}>
+        <ul class="list-disc list-inside space-y-2 text-base font-extralight pl-2" style={`color: hsl(var(--color-text-primary))`}>
             {otherInterests.map(interest => (
                 <li class="pl-1">
                     {interest}
@@ -126,7 +128,7 @@ const otherInterests = [
 
       <!-- Let's Connect (Socials) Box (Span 1 Column) -->
       <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center items-center text-center">
-        <h3 class="font-bold text-xl mb-4" style={`color: hsl(var(--color-text-primary))`}>Let's Connect</h3>
+        <h3 class="font-bold text-xl mb-4" style={`color: hsl(var(--color-text-primary))`}>Let's Connect!</h3>
         <div class="flex gap-4">
           <a href="https://www.github.com/anshsdesai" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="Github"><Github size="20" /></a>
           <a href="https://www.linkedin.com/in/anshsdesai" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="LinkedIn"><Linkedin size="20" /></a>
