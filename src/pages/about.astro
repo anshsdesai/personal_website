@@ -1,66 +1,184 @@
 ---
+// import mod from 'astro/zod';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { User, Zap, Github, Linkedin, Mail } from 'lucide-astro';
+import { Image } from 'astro:assets';
+import { User, Clock, FileText, Github, Linkedin, Mail, BarChart2, Heart } from 'lucide-astro';
+import InspireHepSVG from '../icons/inspireHEP.svg';
+import gscholarSVG from '../icons/Google_Scholar_logo.svg';
+import orcidSVG from '../icons/ORCID_iD.svg';
 
-const skills = ['Geant4 Simulation', 'Python & C++', 'Cryogenics', 'Vacuum Systems', 'Bayesian Stats', 'CAD Design'];
+// --- PLACEHOLDER DATA ---
+const bio = "Hello! I am a 4th year Ph.D. candidate at the University of Oregon. I'm an experimental particle physicist focused on probing the nature of dark matter. I look for dark matter particles in our galaxy by using ultra-sensitive detectors placed deep underground. I also search for dark matter produced in high energy collisions at the Large Hadron Collider.";
+const now = "Currently leading the dark photon analysis for FASER, studying charge traps in SENSEI CCDs, working on the fourth dark matter search with SENSEI and writing my dissertation. Phew, that was a lot!";
+// const photoLink = "../img/uncropped_ansh.jpg";
+import AnshPhoto from "../img/cropped_ansh.jpeg";
+const timezone = "America/Eugene";
+const publications = {
+    summary: "Authored or co-authored 10+ peer-reviewed publications, including articles in PRL and JHEP. I have been lucky enough to be a part of some really talented teams of scientists that are driving new constraints in dark matter parameter space. For more information on my papers, feel free to check out the links below or get in touch!",
+    links: [
+        { name: 'ORCID', url: 'https://orcid.org/0000-0002-5447-8304', icon: orcidSVG,color: 'text-yellow-400'},
+        { name: 'inspirehep', url: 'https://inspirehep.net/authors/2789549', icon: InspireHepSVG,color: 'text-yellow-400'},
+        { name: 'Google Scholar', url: 'https://scholar.google.com/citations?user=_XUdxmMAAAAJ&hl=en', icon: gscholarSVG,color: 'text-yellow-400'}, 
+    ]
+};
+const otherInterests = [
+    "Alpine Hiking & Mountaineering ",
+    "Classical Piano",
+    "Films and Books!",
+    "Photography (see my linked photos!)",
+    "Playing Table Tennis for the University of Oregon Table Tennis Team",
+];
+// ------------------------
 ---
 
 <BaseLayout title="About Me">
-  <div class="max-w-5xl mx-auto pt-10 px-6 relative z-10 animate-fade-in-up">
-    <h2 class="text-3xl font-bold text-white mb-8">About Me</h2>
+  <!-- The main container uses the global background color variable -->
+  <div class="max-w-6xl mx-auto pt-16 pb-24 px-6 relative z-10 animate-fade-in-up" style={`background-color: hsl(var(--color-bg-main));`}>
     
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(180px,auto)]">
+    <h2 class="text-5xl font-extrabold mb-12 text-center" style={`color: hsl(var(--color-text-primary))`}>
+        About Me
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]">
       
-      {/* Main Bio */}
-      <div class="md:col-span-2 md:row-span-2 bg-slate-900/50 p-8 rounded-3xl border border-white/10 hover:border-white/20 transition-colors flex flex-col justify-between">
-        <div class="space-y-4">
-          <h3 class="text-xl font-bold text-white flex items-center gap-2">
-            <User size="20" /> The Researcher
-          </h3>
-          <p class="text-slate-400 leading-relaxed text-lg">
-            I am a Ph.D. candidate specializing in direct detection of Dark Matter. My work focuses on the development of ultra-low background environments and the analysis of signals in liquid xenon time projection chambers (TPCs).
-          </p>
-          <p class="text-slate-400 leading-relaxed text-lg">
-            When you're dealing with events that happen merely a handful of times per year (if at all), precision is everything. I spend my days designing veto systems, simulating background radiation with Geant4, and getting my hands cold with cryogenic hardware.
-          </p>
-        </div>
-      </div>
-
-      {/* Skills */}
-      <div class="md:col-span-1 md:row-span-2 bg-slate-900/50 p-6 rounded-3xl border border-white/10 hover:border-white/20 transition-colors">
-        <h3 class="text-white font-bold mb-6 flex items-center">
-          <Zap size="18" class="text-white mr-2" /> Technical Arsenal
+      <!-- Bio Box (Span 2 Columns) -->
+      <div class="md:col-span-2 bento-card p-8 rounded-xl flex flex-col justify-center">
+        <h3 class="text-2xl font-bold mb-4 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+            <User size="24" /> 
+            Abstract
         </h3>
-        <div class="space-y-3">
-          {skills.map((skill) => (
-            <div class="group flex items-center p-2 rounded-lg hover:bg-white/5 transition-colors">
-              <div class="w-1.5 h-1.5 bg-slate-500 group-hover:bg-white rounded-full mr-3 transition-colors"></div>
-              <span class="text-slate-400 group-hover:text-white text-sm transition-colors">{skill}</span>
+        <p class="leading-relaxed text-xl" style={`color: hsl(var(--color-text-primary))`}>
+            {bio}
+        </p>
+      </div>
+
+      <!-- Photo Box (Span 1 Column, linkable) -->
+      <!-- <a href={photoLink} target="_blank" class="md:col-span-1 bento-card p-6 rounded-xl overflow-hidden group relative flex flex-col items-center justify-center bg-cover bg-center" style={`background-image: url(${photoLink});`}>
+        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-all duration-300 flex items-center justify-center">
+            <div class="text-center">
+                <Image size="32" class="text-white mx-auto mb-2 opacity-80 group-hover:opacity-100 transition-opacity" />
+                <span class="text-white font-semibold text-lg">View Photo</span>
             </div>
-          ))}
+        </div>
+      </a> -->
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-between">
+        <Image src={AnshPhoto} alt="A starry night sky." />
+      </div>
+      
+      <!-- "Now" Box (Span 1 Column) -->
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center">
+        
+        <h3 class="text-xl font-bold mb-3 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            Now
+        </h3>
+        <p class="italic text-lg" style={`color: hsl(var(--color-text-primary))`}>
+            {now}
+        </p>
+      </div>
+      
+      <!-- Timezone/Clock Box (Span 1 Column) -->
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center text-center">
+        <h3 class="text-xl font-bold mb-3 flex items-center justify-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+            <Clock size="20" /> {timezone.split('/').pop().replace('_', ' ')}
+        </h3>
+        <div id="timezone-clock" class="text-4xl font-mono font-extrabold text-white">
+            --:--
+        </div>
+        <div id="timezone-date" class="text-sm mt-1" style={`color: hsl(var(--color-text-primary))`}>
+            --/--/----
         </div>
       </div>
 
-      {/* Philosophy */}
-      <div class="md:col-span-2 bg-slate-900/50 p-6 rounded-3xl border border-white/10 hover:border-white/20 transition-colors flex items-center">
+      <!-- Publications Box (Span 1 Column) -->
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-between">
         <div>
-           <h3 class="text-white font-bold mb-2">Philosophy</h3>
-           <p class="text-slate-400 italic">
-             "Science communication is vital. I strive to make the complex world of particle physics accessible without diluting the physics."
-           </p>
+            <h3 class="text-xl font-bold mb-3 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+                <Mail size="20" /> Publications
+            </h3>
+            <p class="text-sm mb-4 leading-relaxed" style={`color: hsl(var(--color-text-primary))`}>
+                {publications.summary}
+            </p>
+        </div>
+        
+        <div class="flex gap-4 justify-center">
+            {publications.links.map((link) => (
+              <a href={link.url} aria-label={link.name}>
+            <link.icon class="w-10 h-10" />
+            </a>
+            ))}
         </div>
       </div>
 
-      {/* Socials */}
-      <div class="md:col-span-1 bg-white text-slate-950 p-6 rounded-3xl border border-white/10 flex flex-col justify-center items-center text-center">
-        <h3 class="font-bold mb-4">Let's Connect</h3>
+      <!-- Other Interests Box (Span 2 Columns) -->
+      <div class="md:col-span-2 bento-card p-6 rounded-xl">
+        <h3 class="font-bold text-xl mb-3 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+            <Heart size="20" /> Other Interests
+        </h3>
+        <ul class="list-disc list-inside space-y-2 text-lg pl-2" style={`color: hsl(var(--color-text-primary))`}>
+            {otherInterests.map(interest => (
+                <li class="pl-1">
+                    {interest}
+                </li>
+            ))}
+        </ul>
+      </div>
+
+      <!-- Let's Connect (Socials) Box (Span 1 Column) -->
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center items-center text-center">
+        <h3 class="font-bold text-xl mb-4" style={`color: hsl(var(--color-text-primary))`}>Let's Connect</h3>
         <div class="flex gap-4">
-          <a href="#" class="p-2 bg-slate-200 hover:bg-slate-300 rounded-full transition-colors"><Github size="20" /></a>
-          <a href="#" class="p-2 bg-slate-200 hover:bg-slate-300 rounded-full transition-colors"><Linkedin size="20" /></a>
-          <a href="#" class="p-2 bg-slate-200 hover:bg-slate-300 rounded-full transition-colors"><Mail size="20" /></a>
+          <a href="https://www.github.com/anshsdesai" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="Github"><Github size="20" /></a>
+          <a href="https://www.linkedin.com/in/anshsdesai" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="LinkedIn"><Linkedin size="20" /></a>
+          <a href="mailto:ansh.s.desai@proton.me" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="Email"><Mail size="20" /></a>
         </div>
       </div>
 
     </div>
   </div>
 </BaseLayout>
+
+<!-- Live Clock Script -->
+<script>
+    function updateClock() {
+        // Use the specified timezone (America/Los_Angeles in this example)
+        const timezone = "America/Los_Angeles"; 
+        const now = new Date();
+        
+        // Format options for time
+        const timeOptions = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZone: timezone
+        };
+        
+        // Format options for date
+        const dateOptions = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            timeZone: timezone
+        };
+
+        const timeString = now.toLocaleTimeString('en-US', timeOptions);
+        const dateString = now.toLocaleDateString('en-US', dateOptions);
+
+        const clockElement = document.getElementById('timezone-clock');
+        const dateElement = document.getElementById('timezone-date');
+
+        if (clockElement) {
+            clockElement.textContent = timeString;
+        }
+        if (dateElement) {
+            dateElement.textContent = dateString;
+        }
+    }
+
+    // Update the clock immediately and then every second
+    updateClock();
+    const intervalId = setInterval(updateClock, 1000);
+
+    // Clean up interval when the element is removed (though in Astro this is mainly for SPA-like navigation, good practice)
+    document.addEventListener('astro:before-swap', () => clearInterval(intervalId));
+</script>

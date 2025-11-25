@@ -1,18 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanuman:wght@100..900&display=swap');
+
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* @font-face { */
+  /* font-family: 'Hanuman';
+  /* Crucial: The path is relative to the *root* of your project's public folder */
+  /* src: url('/fonts/Hanuman-Regular.woff2') format('woff2');  */
+  /* font-weight: 400; Assuming the standard weight for this link */
+  /* font-style: normal; */
+  /* font-display: swap;  */
+/* } */ 
+/* --- ABOUT ME PAGE CUSTOM COLORS (CSS Variables) --- */
+:root {
+  /* Main Background & Text */
+  --color-bg-main: #090e1aff; /* Dark Slate Blue */
+  --color-text-primary: #e8edf7; /* Light Slate */
+
+  /* Card Styling */
+  --color-card-bg: rgba(15, 23, 42, 0.65); /* Translucent Slate 900 */
+  --color-card-border: rgba(20, 17, 17, 0.1);
+  --color-card-hover-border: rgba(199, 210, 254, 0.4); /* Light Indigo on Hover */
+
+  /* Accent Colors */
+  --color-accent-strong: #6767e4ff; /* Strong Indigo */
+  --color-accent-soft: #a8a8f0ff; /* Soft Indigo */
+  
+  /* Specific Green for 'Now' Pulse */
+  --color-pulse-green: #20df66ff; /* Tailwind Green 500 equivalent */
+
+
+  /* --- CV Colors --- */
+    --cv-bg-primary: #1E293B;            /* Tailwind Slate-800 */
+    --cv-bg-secondary: #0F172A;          /* A darker Slate/Navy for depth */
+    
+    /* --- Card/Container --- */
+    --cv-bg-card: #0F172A;               /* Dark Navy/Slate-900 */
+    --cv-bg-card-hover: #1E293B;         /* Slate-800 for contrast */
+    
+    /* --- Text Colors --- */
+    --cv-text-primary: #F8FAFC;          /* Near White (Tailwind White/Slate-50) */
+    --cv-text-secondary: #94A3B8;        /* Light Slate Gray (Tailwind Slate-400) */
+    --cv-text-heading: #FFFFFF;          /* Pure White for main titles */
+    --cv-text-button:  #090e1aff;          /* Pure White for main titles */
+    
+    /* --- Primary Accent Color (Indigo) --- */
+    --cv-accent-base: #e8edf7;           /* Tailwind Indigo-500 */
+    --cv-accent-dark: #bbc8e8;           /* Tailwind Indigo-600 */
+    --cv-accent-border: #bbc8e8;         /* Indigo-600 for border */
+    
+    /* --- Utility/Note Color --- */
+    --cv-note-bg: #111827;               /* Very Dark Gray/Slate-900 */
+    --cv-note-text: #6B7280;             /* Medium Gray (Tailwind Gray-500) */
+}
+
+/* --- ABOUT ME PAGE CARD STYLING --- */
+.bento-card {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-card-border);
+  transition: all 0.3s ease;
+}
+
+.bento-card:hover {
+  border-color: var(--color-card-hover-border);
+  transform: translateY(-2px);
+  /* Using a generic shadow for visual lift on hover */
+  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.1), 0 4px 6px -2px rgba(139, 92, 246, 0.05); 
+}
+/* ----------------------------------------------------- */
+
 /* Move your custom animations here.
-   This ensures they are available to all utility classes 
+   This ensures they are available to all utility classes
 */
 
 @layer utilities {
   .animate-fade-in {
     animation: fade-in 1s ease-out forwards;
   }
-  
+
   .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
+  }
+  
+  /* Pulse animation utility for the 'Now' indicator */
+  .animate-pulse-slow {
+    animation: pulse-green 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 }
 
@@ -25,3 +101,15 @@
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+@keyframes pulse-green {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.5); /* Start/End with a gentle shadow */
+    }
+    50% {
+        /* Use the defined CSS variable for the green color */
+        box-shadow: 0 0 0 10px hsla(var(--color-pulse-green), 0); /* Expand and fade out */
+    }
+}
+
+

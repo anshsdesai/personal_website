@@ -1,35 +1,61 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ChevronRight } from 'lucide-astro';
+const BG_IMAGE_URL = "/assets/ring_of_dark_matter.jpg";
+
 ---
 
-<BaseLayout title="Dark Matter Physicist | Portfolio">
-  <div class="flex flex-col items-center justify-center min-h-[80vh] text-center px-4 relative z-10 animate-fade-in">
-    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 text-xs mb-6 tracking-widest uppercase">
-      <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-      <span>Experimental Physics</span>
-    </div>
-    
-    <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-      Detecting the <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-400 to-transparent">Invisible</span>
-    </h1>
-    
-    <p class="text-slate-400 max-w-2xl text-lg md:text-xl leading-relaxed mb-10">
-      I hunt for Dark Matter using cryogenic liquid detectors. 
-      Bridging the gap between theoretical cosmology and low-background instrumentation.
-    </p>
+<BaseLayout title="Ansh Desai">
+  <!-- <div 
+    class="relative flex flex-col items-center justify-center min-h-[90vh] text-center px-4 z-0 
+           bg-cover bg-center transition-all duration-500"
+    style={{ backgroundImage: `url(${BG_IMAGE_URL})` }}
+  > -->
 
-    <div class="flex flex-wrap justify-center gap-4">
-      <a href="/research" 
-        class="px-8 py-3 bg-white text-black hover:bg-slate-200 rounded-lg font-medium transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] flex items-center"
-      >
-        View Research <ChevronRight size="16" class="ml-2" />
-      </a>
-      <a href="/about" 
-        class="px-8 py-3 bg-transparent hover:bg-white/5 text-slate-300 border border-slate-700 hover:border-white/50 rounded-lg font-medium transition-all"
-      >
-        About Me
-      </a>
+  <!-- Content Layer (Needs high z-index to sit on top of the overlay) -->
+    <div class="relative z-20 flex flex-col items-center justify-center pt-20 pb-10">
+        <div class="flex flex-col items-center justify-center min-h-[80vh] text-center px-4 relative z-10 animate-fade-in">
+          
+        
+          <h1 class="text-3xl md:text-3xl font-bold text-white mb-6 tracking-widest">
+            ANSH DESAI
+          </h1>
+          <!-- <h1 class="font-jetbrain">This text uses the jet brain font.</h2>
+            <h1 class="font-hanuman">This text uses the hanuman font.</h2>
+            <h1 class="font-serif">This text uses the default serif font.</h2>
+            <h1 class="font-mono">This text uses the default mono font.</h2> -->
+
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+            Detecting the <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-400 to-transparent">Invisible</span>
+          </h1>
+        
+          <p class="text-slate-400 max-w-2xl text-lg md:text-xl leading-relaxed mb-10">
+            I hunt for light dark matter using next-generation low-threshold detection technology.
+          </p>
+
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 text-xs mb-6 tracking-widest uppercase">
+            <span class="w-2 h-2 rounded-full bg-[--color-pulse-green] animate-pulse"></span>
+            <span>On the Job Market</span>
+          </div>
+
+
+          <div class="mt-6">
+          {/* This div has a top margin of 1.5rem */}
+          </div>
+
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="/cv" 
+              class="px-8 py-3 bg-white text-black hover:bg-slate-200 rounded-lg font-medium transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] flex items-center"
+            >
+              View Research <ChevronRight size="16" class="ml-2" />
+            </a>
+            <a href="/about" 
+              class="px-8 py-3 bg-transparent hover:bg-white/5 text-slate-300 border border-slate-700 hover:border-white/50 rounded-lg font-medium transition-all"
+            >
+              About Me
+            </a>
+          </div>
+      </div>
     </div>
   </div>
 </BaseLayout>

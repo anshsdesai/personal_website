@@ -8,6 +8,11 @@ export default {
   ],
   theme: {
     extend: {
+    fontFamily: {
+        hanuman: ["Hanuman", 'serif'],
+        jetbrain: ["JetBrains Mono", 'monospace'],
+      },
+      
       // You can define custom fonts, colors, or sizes here if needed later.
       // For example, if you wanted a custom color:
       // colors: {
@@ -18,3 +23,4 @@ export default {
   // Ensure we are using the official Astro integration syntax if it's installed.
   plugins: [],
 }
+
