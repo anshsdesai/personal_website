@@ -19,7 +19,9 @@
 :root {
   /* Main Background & Text */
   --color-bg-main: #090e1aff; /* Dark Slate Blue */
+  --color-stars: #ffff; /* White */
   --color-text-primary: #e8edf7; /* Light Slate */
+  --color-glow-main: rgb(148 163 184);
 
   /* Card Styling */
   --color-card-bg: rgba(15, 23, 42, 0.65); /* Translucent Slate 900 */
@@ -111,5 +113,4 @@
         box-shadow: 0 0 0 10px hsla(var(--color-pulse-green), 0); /* Expand and fade out */
     }
 }
-
 
