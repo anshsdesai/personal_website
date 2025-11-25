@@ -27,8 +27,79 @@ const { title } = Astro.props;
     </main>
 
     <Navigation />
-    <!-- <Footer /> -->
+    <Footer />
     
+
+    <script>
+      /**
+       * Dynamic Navigation Stickiness Logic
+       * This script manages the transition of the fixed navigation bar to an absolute position
+       * when the user scrolls down far enough for the footer to appear, preventing collision.
+       */
+      function handleNavigationStickiness() {
+          const nav = document.getElementById('main-navigation');
+          const footer = document.getElementById('main-site-footer');
+          
+          if (!nav || !footer) return;
+
+          // 'bottom-6' in Tailwind is 1.5rem or 24px. This is our fixed margin.
+          const fixedBottomMargin = 24; 
+          
+          // Get the position of the footer's top edge relative to the document start (0,0)
+          const footerTopOnPage = footer.offsetTop;
+          
+          // Get the height of the navigation bar itself
+          const navHeight = nav.offsetHeight;
+          
+          // Calculate the scroll position (Y-coordinate) at which the fixed navigation 
+          // should stop floating. This occurs when the footer's top edge scrolls up 
+          // past the line where the fixed nav would sit.
+          
+          const scrollStopY = footerTopOnPage - window.innerHeight + navHeight + fixedBottomMargin;
+
+          if (window.scrollY > scrollStopY) {
+              // Footer is visible and close, switch to absolute positioning (stop floating)
+              
+              // 1. Remove fixed positioning classes
+              nav.classList.remove('fixed', 'bottom-6');
+              
+              // 2. Add absolute positioning class
+              nav.classList.add('absolute');
+              
+              // 3. Set the absolute 'top' position so the nav is fixed in place.
+              // The position is determined by the footer's page position minus the nav's height and margin.
+              const navAbsoluteStopTop = footerTopOnPage - navHeight - fixedBottomMargin;
+              nav.style.top = `${navAbsoluteStopTop}px`;
+              nav.style.bottom = 'auto'; // Clear bottom property when using top
+              
+          } else {
+              // Footer is far away, keep the navigation fixed to the bottom of the viewport
+              
+              // 1. Remove absolute positioning and inline styles
+              nav.classList.remove('absolute');
+              nav.style.top = '';
+              nav.style.bottom = ''; // Clear inline styles to allow Tailwind's fixed bottom-6 to take over
+              
+              // 2. Add fixed positioning classes
+              nav.classList.add('fixed', 'bottom-6');
+          }
+      }
+
+      // Add listener with a small throttle for performance
+      let scrollTimer;
+      const scrollHandler = () => {
+          if (scrollTimer) clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(handleNavigationStickiness, 10); 
+      };
+
+      // Run on load, scroll, and resize
+      window.addEventListener('scroll', scrollHandler);
+      window.addEventListener('resize', scrollHandler);
+      document.addEventListener('DOMContentLoaded', handleNavigationStickiness);
+      // Run once slightly delayed to ensure all elements have rendered
+      setTimeout(handleNavigationStickiness, 100); 
+
+    </script>
     <!-- You can remove the <style is:global> block since it is now in global.css -->
   </body>
 </html>
