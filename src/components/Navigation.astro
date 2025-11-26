@@ -1,13 +1,13 @@
 ---
-import { Atom, User, Zap, Camera, FileText } from 'lucide-astro';
+import { Atom, User, Zap, Camera, FileText, Home} from 'lucide-astro';
 
 const pathname = new URL(Astro.request.url).pathname;
 const currentPath = pathname === '/' ? 'home' : pathname.replace('/', '');
 
 const navItems = [
-  { id: 'home', label: 'Overview', icon: Atom, href: '/' },
+  { id: 'home', label: 'Home', icon: Home, href: '/' },
   { id: 'about', label: 'About Me', icon: User, href: '/about' },
-  // { id: 'research', label: 'Research', icon: Zap, href: '/research' },
+  { id: 'research', label: 'Research', icon: Atom, href: '/research' },
   { id: 'cv', label: 'CV', icon: FileText, href: '/cv' },
   { id: 'photography', label: 'Photography', icon: Camera, href: '/photography' },
 ];

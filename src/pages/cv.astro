@@ -4,31 +4,27 @@ import { FileText } from 'lucide-astro';
 ---
 
 <BaseLayout title="CV">
-  <div class="max-w-4xl mx-auto pt-10 px-6 relative z-10 animate-fade-in-up">
+  <div class="max-w-6xl mx-auto pt-10 px-6 relative z-10 animate-fade-in-up">
     
-    <!-- Using global variables: --cv-bg-card (for slate-900), --cv-text-primary (for white border) -->
-    <div class="bg-[--cv-bg-card]/60 backdrop-blur-md  rounded-2xl p-6 md:p-8 shadow-2xl">
+    <div class="bg-[--color-bg-main]/60 backdrop-blur-md  rounded-2xl p-6 md:p-8 shadow-2xl">
       
       <!-- CV Header and Download Link -->
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
         <div>
-          <!-- Using global variable: --cv-text-heading (for white text) -->
-          <h2 class="text-3xl font-extrabold text-[--cv-text-heading] mb-1">Curriculum Vitae</h2>
+          <h2 class="text-3xl font-extrabold text-[--color-text-title] mb-1">Curriculum Vitae</h2>
         </div>
         
-        <!-- Using global variables: --cv-accent-base (for bg-indigo-500), --cv-accent-dark (for hover:bg-indigo-600) -->
         <a 
           href="/assets/cv.pdf" 
           download 
-          class="flex items-center gap-2 mt-4 sm:mt-0 px-4 py-2 bg-[--cv-accent-base] text-[--cv-text-button] rounded-lg font-bold hover:bg-[--cv-accent-dark] transition-colors shadow-lg shadow-[--cv-accent-base]/30">
+          class="flex items-center gap-2 mt-4 sm:mt-0 px-4 py-2 bg-[--color-bg-accent] text-[--color-text-buttontext] rounded-lg font-bold hover:bg-[--color-bg-accentdark] transition-colors shadow-lg shadow-[--color-bg-accent]/30">
           
           <FileText size="18" /> Download PDF
         </a>
       </div>
 
       <!-- PDF Embedding Container -->
-      <!-- Using global variables: --cv-accent-border (for indigo-400), --cv-bg-secondary (for gray-800) -->
-      <div class="w-full h-[800px] mt-6 rounded-lg overflow-hidden relative bg-[--cv-bg-secondary]">
+      <div class="w-full h-[800px] mt-6 rounded-lg overflow-hidden relative bg-[--color-bg-secondary]">
         
         <embed 
           src="/assets/cv.pdf" 
@@ -37,10 +33,7 @@ import { FileText } from 'lucide-astro';
           title="Curriculum Vitae Document"
         />
         
-        <!-- Using global variables: --cv-note-text (for slate-500), --cv-note-bg (for slate-900) -->
-        <!-- <p class="text-[--cv-note-text] text-xs mt-4 pt-2 text-center border-t border-[--cv-text-primary]/5 absolute bottom-0 left-0 w-full p-2 bg-[--cv-note-bg]/80 backdrop-blur-sm">
-          Note: If the document doesn't display correctly, ensure the file exists at <code>../assets/cv.pdf</code> and try refreshing.
-        </p> -->
+        
       </div>
       
     </div>

@@ -4,42 +4,130 @@ import { FileText } from 'lucide-astro';
 
 const projects = [
   {
-    title: "WIMP Sensitivity in Liquid Xenon",
-    role: "Analysis Lead",
-    desc: "Developed a new statistical framework for background discrimination in multi-ton detectors. Improved low-mass WIMP sensitivity by 15%.",
-    tags: ["Python", "Statistics", "Data Analysis"]
+    title: "Pythonic Analysis Framework for FASER",
+    role: "Analysis",
+    desc: "Developed a fully pythonic framework for FASER analysis based on coffea, uproot, dask",
+    tags: ["Python", "Data Analysis","Dark Sectors at Colliders"]
   },
   {
-    title: "Neutron Veto Hardware",
-    role: "Hardware Engineer",
-    desc: "Designed and assembled the photomultiplier tube (PMT) arrays for the outer neutron veto system. Conducted cryogenic stress testing.",
-    tags: ["Hardware", "Cryogenics", "CAD"]
+    title: "DarkMatterRates",
+    role: "Theory",
+    desc: "Wrote code that uses pytorch to calculate dark matter electron scattering rates in Silicon, Xenon, and Argon. This code is also capable of taking in custom inputs for the galactic dark matter halo distribution. It can even calculate daily modulation of rates by taking inputs from simulations like DaMaSCUS or Verne.",
+    tags: ["Python", "Phenomenology", "Direct Detection of Dark Matter"]
   },
   {
-    title: "Background Modeling (Geant4)",
-    role: "Simulation",
-    desc: "Simulated radiogenic neutron backgrounds from detector materials to establish the ultimate sensitivity floor for the next generation experiment.",
-    tags: ["C++", "Geant4", "Monte Carlo"]
-  }
+    title: "SENSEI Limit",
+    role: "Analysis",
+    desc: "Wrote code that calculates the statistical framework for setting exclusion curves for SENSEI.",
+    tags: ["Python", "Statistics", "Direct Detection of Dark Matter"]
+  },
+  {
+    title: "Machine Learning For Halo Independent Studies of Dark Matter",
+    role: "Theory",
+    desc: "Working on a project to take the dark matter scattering rates seen at detectors and use machine learning techniques to extrapolate the expected shape of the dark matter halo distribution.",
+    tags: ["Python", "Pytorch", "Machine Learning","Direct Detection of Dark Matter"]
+  },
+  {
+    title: "CCD R&D",
+    role: "Hardware",
+    desc: "At Fermilab I spent a year in the CCD lab working on hardware projects related to SENSEI detectors. I worked to reduce low threshold backgrounds and characterize detector properties. To do this, I set up my own system took measurements at the surface and additionally took measurements with our underground detector in the MINOS cavern.",
+    tags: ["CCD", "Hardware", "Readout Electronics","Vacuum Systems","Direct Detection of Dark Matter"]
+  },
 ];
+
+const publications = [
+    {
+        title: "Charge Trap Analysis in a SENSEI Skipper-CCD: Understanding Low-Energy Backgrounds in Rare-Event Searches",
+        journal: "arXiV Preprint",
+        year: "2025",
+        link: "https://arxiv.org/abs/2510.23336"
+    },
+    {
+        title: "SENSEI: A Search for Diurnal Modulation in sub-GeV Dark Matter Scattering",
+        journal: "arXiV Preprint",
+        year: "2025",
+        link: "https://arxiv.org/abs/2510.20889"
+    },
+    {
+        title: "Earth-scattering induced modulation in low-threshold dark matter experiments",
+        journal: "Journal of High Energy Physics",
+        year: "2025",
+        link: "https://link.springer.com/article/10.1007/JHEP11(2025)042"
+    },
+
+    {
+        title: "First Measurement of the Muon Neutrino Interaction Cross Section and Flux as a Function of Energy at the LHC with FASER",
+        journal: "Physics Review Letters",
+        year: "2025",
+        link: "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.134.211801"
+    },
+
+    {
+        title: "SENSEI at SNOLAB: Single-Electron Event Rate and Implications for Dark Matter",
+        journal: "Physics Review Letters",
+        year: "2025",
+        link: "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.134.161002"
+    },
+
+    {
+        title: "Shining light on the dark sector: search for axion-like particles and other new physics in photonic final states with FASER",
+        journal: "Journal of High Energy Physics",
+        year: "2025",
+        link: "https://link.springer.com/article/10.1007/JHEP01(2025)199"
+    },
+
+    {
+        title: "First Direct-Detection Results on Sub-GeV Dark Matter Using the SENSEI Detector at SNOLAB",
+        journal: "Physics Review Letters",
+        year: "2025",
+        link: "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.134.011804"
+    },
+
+    {
+        title: "Search for dark photons with the FASER detector at the LHC",
+        journal: "Physics Letters B",
+        year: "2024",
+        link: "https://www.sciencedirect.com/science/article/pii/S0370269323007128"
+    },
+
+    {
+        title: "First Direct Observation of Collider Neutrinos with FASER at the LHC",
+        journal: "Physics Review Letters",
+        year: "2024",
+        link: "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.131.031801"
+    },
+]
 ---
 
 <BaseLayout title="Research">
   <div class="max-w-5xl mx-auto pt-10 px-6 relative z-10 animate-fade-in-up">
-    <h2 class="text-3xl font-bold text-white mb-2 pl-1">Research & Publications</h2>
-    <p class="text-slate-500 mb-10 pl-1">Exploring the particle nature of the universe.</p>
+    <h1 class="text-3xl font-bold text-[--color-text-title] mb-2 pl-1">Research & Publications</h1>
+    <!-- <p class="text-[--color-text-subheading] mb-10 pl-1">Exploring the particle nature of the universe.</p> -->
+    <div class="mt-16 border-t border-white/10 pt-10"></div>
+    <h3 class="text-2xl font-bold text-[--color-text-header] mb-2 pl-1">What do I work on?</h3>
+    <p class="text-[--color-text-primary] mb-10 pl-1">I'm interested in probing the microphysics of dark matter through new experimental techniques. We're pretty sure dark matter is out there, but so far we've only been able to detect its interactions with ordinary matter through gravity. The allowed range of parameter space for dark matter spans <em>90 orders of magnitude</em>. That means dark matter could be lighter than any known particle or heavier than the sun! We have good ideas of where in this huge range of possibilities dark matter could live, and the scientific community is working really hard to probe all of them. I'm interested in a class of models known as "Light Dark Matter", which are dark matter candidates less than the mass of a proton (1 GeV) but still large enough that they're particles, not waves. Dark matter in this range of masses would belong to an entire dark sector. This means there could be all sorts of different types of dark matter particles and force carriers (like a dark matter version of the photon). This means that you can look for dark matter particles in our galaxy, and you can try to make dark matter in colliders! I'm lucky enough to work on two experiments that are searching in both regimes. I work on the SENSEI experiment to look for light dark matter present in our galaxy, and I work on the FASER experiment searching for dark photons produced in high energy collisions at the Large Hadron Collider</p>
+    <div>
+        <a href="https://faser.web.cern.ch/" target="_blank" class="text-[--color-text-description] hover:text-[--color-text-primary] transition-colors underline"> Click here for more info on FASER</a>
+        </div>
+    <div>
+        <a class = "text-[--color-text-description] hover:text-[--color-text-primary] transition-colors underline" href="https://sensei-skipper.github.io/" target="_blank"> Click here for more info on SENSEI</a>
+    </div>
+    
 
+    <div class="mt-16 border-t border-white/10 pt-10"></div>
+    <h2 class="text-2xl font-bold text-[--color-text-heading] mb-6">Projects</h2>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+         
       {projects.map((proj) => (
         <div class="bg-slate-900/40 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:border-white/30 transition-all hover:-translate-y-1 group">
-          <h3 class="text-xl font-bold text-slate-200 mb-2 group-hover:text-white transition-colors">{proj.title}</h3>
-          <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">{proj.role}</span>
-          <p class="text-slate-400 mt-4 text-sm leading-relaxed mb-6">
+          <h3 class="text-xl font-bold text-[--color-text-subheading] mb-2 group-hover:text-[--color-text-highlight] transition-colors">{proj.title}</h3>
+          <span class="text-xs font-semibold text-[--color-text-tag] uppercase tracking-wider ">{proj.role}</span>
+          <p class="text-[--color-text-description] mt-4 text-sm leading-relaxed mb-6 group-hover:text-[--color-text-primary] transition-colors">
             {proj.desc}
           </p>
           <div class="flex flex-wrap gap-2 mt-auto">
             {proj.tags.map(tag => (
-              <span class="px-2 py-1 bg-white/5 text-slate-300 text-xs rounded-md border border-white/5">
+              <span class="px-2 py-1 bg-white/5 text-[--color-text-tag] text-xs rounded-md border border-white/5">
                 {tag}
               </span>
             ))}
@@ -49,16 +137,17 @@ const projects = [
     </div>
 
     <div class="mt-16 border-t border-white/10 pt-10">
-      <h3 class="text-xl font-bold text-white mb-6">Selected Publications</h3>
+      <h3 class="text-xl font-bold text-[--color-text-title] mb-6">Selected Publications</h3>
+      <p class="text-[--color-text-description]">This was last updated in November of 2025. Check out the my publications using the links on the About Me page for more up to date information.</p>
       <ul class="space-y-4">
-        {[1, 2, 3].map((i) => (
-          <li class="flex gap-4 text-slate-400 hover:bg-white/5 p-4 rounded-lg transition-colors border border-transparent hover:border-white/5">
-            <FileText class="shrink-0 text-slate-200" size="20" />
+        {publications.map((pub) => (
+          <li class="flex gap-4 text-[--color-text-subheading] hover:bg-white/5 p-4 rounded-lg transition-colors border border-transparent hover:border-white/5">
+            <FileText class="shrink-0 text-[--color-text-tag]" size="20" />
             <div>
-              <h4 class="text-slate-200 font-medium hover:text-white cursor-pointer">
-                First Results from the XYZ Experiment: Constraints on Spin-Independent Interactions
-              </h4>
-              <p class="text-sm mt-1 text-slate-500">Physical Review Letters, 2024</p>
+              <a href={pub.link} target='_blank' class="text-[--color-text-subheading] font-medium hover:text-[--color-text-highlight] cursor-pointer">
+                {pub.title}
+              </a>
+              <p class="text-sm mt-1 text-[--color-text-description]">{pub.journal}, {pub.year}</p>
             </div>
           </li>
         ))}

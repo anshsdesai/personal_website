@@ -8,7 +8,7 @@ import gscholarSVG from '../icons/Google_Scholar_logo.svg';
 import orcidSVG from '../icons/ORCID_iD.svg';
 
 // --- PLACEHOLDER DATA ---
-const bio = "Hello! I am a 4th year Ph.D. candidate at the University of Oregon. I'm an experimental particle physicist focused on probing the nature of dark matter. I look for dark matter particles in our galaxy by using ultra-sensitive detectors placed deep underground. I also search for dark matter produced in high energy collisions at the Large Hadron Collider. I've authored or co-authored 10+ peer-reviewed publications, including articles in PRL and JHEP. I have been lucky enough to be a part of some really talented teams of scientists that are driving new constraints in dark matter parameter space. ";
+const bio = "Hello! I'm an experimental particle physicist focused on probing the nature of dark matter. I'm originally from Colorado, and I got my Bachelor's in Physics with minors in mathematics and computer science from the University of Colorado as a Boettcher Scholar. I then went on to a Master's program at Stony Brook University in New York for a year, where I got really excited about dark matter detectors. This interest in dark sector physics took me to University of Oregon to pursue my Ph.D in physics. Here I work with Tien-Tien Yu and the SENSEI collaboration to look for dark matter particles in our galaxy by using ultra-sensitive detectors placed deep underground. I also work with Eric Torrence and the FASER collaboration to search for dark matter produced in high energy collisions at the Large Hadron Collider. I have been lucky enough to be a part of some really talented teams of scientists that are driving new constraints in dark matter parameter space. I've authored or co-authored 10+ peer-reviewed publications, including articles in PRL and JHEP.";
 const now = "Currently leading the dark photon analysis for FASER, studying charge traps in SENSEI CCDs, working on the fourth dark matter search with SENSEI and writing my dissertation.";
 // const photoLink = "../img/uncropped_ansh.jpg";
 import AnshPhoto from "../img/cropped_ansh.jpeg";
@@ -22,11 +22,11 @@ const publications = {
     ]
 };
 const otherInterests = [
-    "Alpine Hiking & Mountaineering ",
+    "Alpine Hiking & Mountaineering",
     "Classical Piano",
-    "Films and Books!",
+    "Films (any) and Books (scifi, horror, litfic)",
     "Photography (see my linked photos!)",
-    "Playing Table Tennis for the University of Oregon Table Tennis Team",
+    "Playing table tennis for the University of Oregon",
 ];
 // ------------------------
 ---
@@ -35,19 +35,19 @@ const otherInterests = [
   <!-- The main container uses the global background color variable -->
   <div class="max-w-6xl mx-auto pt-16 pb-24 px-6 relative z-10 animate-fade-in-up" style={`background-color: hsl(var(--color-bg-main));`}>
     
-    <h2 class="text-5xl font-extrabold mb-12 text-center" style={`color: hsl(var(--color-text-primary))`}>
+    <h2 class="text-5xl font-extrabold mb-12 text-center text-[--color-text-title]">
         About Me
     </h2>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]">
       
       <!-- Bio Box (Span 2 Columns) -->
-      <div class="md:col-span-2 bento-card p-8 rounded-xl flex flex-col">
-        <h3 class="text-2xl font-bold mb-4 flex items-center align-top gap-2" style={`color: hsl(var(--color-accent-soft))`}>
-            <User size="24" /> 
+      <div class="md:col-span-2 bento-card p-8 rounded-xl flex flex-col group">
+        <h3 class="text-2xl text-[--color-text-headingdark] font-bold mb-4 flex items-center align-top gap-2 group-hover:text-[--color-text-headinglight] transition-colors">
+            <User size="24"/> 
             Abstract
         </h3>
-        <p class="leading-relaxed text-base font-extralight" style={`color: hsl(var(--color-text-primary))`}>
+        <p class="leading-relaxed text-base text-[--color-text-description] font-extralight group-hover:text-[--color-text-primary] transition-colors">
             {bio}
         </p>
       </div>
@@ -66,37 +66,37 @@ const otherInterests = [
       </div>
       
       <!-- "Now" Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col align-top">
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col align-top group">
         
-        <h3 class="text-xl font-bold mb-3 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+        <h3 class="text-xl font-bold mb-3 flex items-center gap-2 text-[--color-text-headingdark] group-hover:text-[--color-text-headinglight] transition-colors">
           <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             Now
         </h3>
-        <p class="text-base font-extralight" style={`color: hsl(var(--color-text-primary))`}>
+        <p class="text-base text-[--color-text-description] font-extralight group-hover:text-[--color-text-primary] transition-colors">
             {now}
         </p>
       </div>
       
       <!-- Timezone/Clock Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center text-center">
-        <h3 class="text-xl font-bold mb-3 flex items-center justify-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center text-center group">
+        <h3 class="text-xl text-[--color-text-headingdark] font-bold mb-3 flex items-center justify-center gap-2 group-hover:text-[--color-text-headinglight] transition-colors">
             <Clock size="20" /> {timezone.split('/').pop().replace('_', ' ')}
         </h3>
-        <div id="timezone-clock" class="text-4xl font-mono font-extrabold text-white">
+        <div id="timezone-clock" class="text-4xl font-mono font-extrabold text-[--color-text-description] group-hover:text-[--color-text-primary] transition-colors">
             --:--
         </div>
-        <div id="timezone-date" class="text-sm mt-1" style={`color: hsl(var(--color-text-primary))`}>
+        <div id="timezone-date" class="text-sm mt-1 text-[--color-text-description] group-hover:text-[--color-text-primary] transition-colors">
             --/--/----
         </div>
       </div>
 
       <!-- Publications Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col align-top">
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col align-top group">
         <div>
-            <h3 class="text-xl font-bold mb-3 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+            <h3 class="text-xl font-bold mb-3 flex items-center gap-2 text-[--color-text-headingdark] group-hover:text-[--color-text-headinglight] transition-colors">
                 <Mail size="20" /> Publications
             </h3>
-            <p class="text-base font-extralight mb-4 leading-relaxed" style={`color: hsl(var(--color-text-primary))`}>
+            <p class="text-base font-extralight mb-4 leading-relaxed text-[--color-text-description] group-hover:text-[--color-text-primary] transition-colors">
                 {publications.summary}
             </p>
         </div>
@@ -113,11 +113,11 @@ const otherInterests = [
       </div>
 
       <!-- Other Interests Box (Span 2 Columns) -->
-      <div class="md:col-span-2 bento-card p-6 rounded-xl align-top">
-        <h3 class="font-bold text-xl mb-3 flex items-center gap-2" style={`color: hsl(var(--color-accent-soft))`}>
+      <div class="md:col-span-2 bento-card p-6 rounded-xl align-top group ">
+        <h3 class="font-bold text-xl mb-3 flex items-center gap-2 text-[--color-text-headingdark] group-hover:text-[--color-text-headinglight] transition-colors">
             <Heart size="20" /> Other Interests
         </h3>
-        <ul class="list-disc list-inside space-y-2 text-base font-extralight pl-2" style={`color: hsl(var(--color-text-primary))`}>
+        <ul class="list-disc list-inside space-y-2 text-base font-extralight pl-2 text-[--color-text-description] group-hover:text-[--color-text-primary] transition-colors">
             {otherInterests.map(interest => (
                 <li class="pl-1">
                     {interest}
@@ -127,8 +127,8 @@ const otherInterests = [
       </div>
 
       <!-- Let's Connect (Socials) Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center items-center text-center">
-        <h3 class="font-bold text-xl mb-4" style={`color: hsl(var(--color-text-primary))`}>Let's Connect!</h3>
+      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center items-center text-center group">
+        <h3 class="font-bold text-xl mb-4 text-[--color-text-headingdark] group-hover:text-[--color-text-headinglight] transition-colors ">Let's Connect!</h3>
         <div class="flex gap-4">
           <a href="https://www.github.com/anshsdesai" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="Github"><Github size="20" /></a>
           <a href="https://www.linkedin.com/in/anshsdesai" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="LinkedIn"><Linkedin size="20" /></a>

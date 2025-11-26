@@ -17,11 +17,31 @@
 /* } */ 
 /* --- ABOUT ME PAGE CUSTOM COLORS (CSS Variables) --- */
 :root {
-  /* Main Background & Text */
+  /* Main Backgrounds */
   --color-bg-main: #090e1aff; /* Dark Slate Blue */
   --color-stars: #ffff; /* White */
-  --color-text-primary: #e8edf7; /* Light Slate */
+  --color-bg-secondary: #0F172A;          
+  --color-bg-accent: #e8edf7;
+  --color-bg-accentdark: #8699b8;
+
+  --color-border-highlight: #ffff;
+
   --color-glow-main: rgb(148 163 184);
+
+  /*Text Colors*/
+  --color-text-primary: #e8edf7; 
+  --color-text-title: #FFFF;         
+  --color-text-highlight: #FFFF;          
+  --color-text-headinglight: #F8FAFC;          
+  --color-text-headingdark: #abbdd6;       
+  --color-text-description: rgb(100 116 139);        
+  --color-text-tag: rgb(148 163 184);  
+  --color-text-buttontext:  #090e1aff;
+
+
+  /* --- Utility/Note Color --- */
+  --color-note-bg: #111827;               /* Very Dark Gray/Slate-900 */
+  --color-note-text: #6B7280;             /* Medium Gray (Tailwind Gray-500) */
 
   /* Card Styling */
   --color-card-bg: rgba(15, 23, 42, 0.65); /* Translucent Slate 900 */
@@ -36,28 +56,9 @@
   --color-pulse-green: #20df66ff; /* Tailwind Green 500 equivalent */
 
 
-  /* --- CV Colors --- */
-    --cv-bg-primary: #1E293B;            /* Tailwind Slate-800 */
-    --cv-bg-secondary: #0F172A;          /* A darker Slate/Navy for depth */
-    
-    /* --- Card/Container --- */
-    --cv-bg-card: #0F172A;               /* Dark Navy/Slate-900 */
-    --cv-bg-card-hover: #1E293B;         /* Slate-800 for contrast */
-    
-    /* --- Text Colors --- */
-    --cv-text-primary: #F8FAFC;          /* Near White (Tailwind White/Slate-50) */
-    --cv-text-secondary: #94A3B8;        /* Light Slate Gray (Tailwind Slate-400) */
-    --cv-text-heading: #FFFFFF;          /* Pure White for main titles */
-    --cv-text-button:  #090e1aff;          /* Pure White for main titles */
-    
-    /* --- Primary Accent Color (Indigo) --- */
-    --cv-accent-base: #e8edf7;           /* Tailwind Indigo-500 */
-    --cv-accent-dark: #bbc8e8;           /* Tailwind Indigo-600 */
-    --cv-accent-border: #bbc8e8;         /* Indigo-600 for border */
-    
-    /* --- Utility/Note Color --- */
-    --cv-note-bg: #111827;               /* Very Dark Gray/Slate-900 */
-    --cv-note-text: #6B7280;             /* Medium Gray (Tailwind Gray-500) */
+  
+
+
 }
 
 /* --- ABOUT ME PAGE CARD STYLING --- */
