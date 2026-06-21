@@ -1,0 +1,420 @@
+---
+/*
+  HeroVisual.astro — the landing "lines of evidence" hero.
+
+  Four physically-faithful canvas simulations of dark-matter evidence share one
+  hi-dpi canvas; the evidence rail promotes any one into the hero slot. All four
+  are drawn in a fixed logical 320x240 space and scaled to the canvas, so the
+  physics is resolution-independent. Ink-on-paper brand palette (blue = visible
+  matter/light; translucent orange = dark matter, the rare "signal"). Respects
+  prefers-reduced-motion; the heavy cosmic-web precompute is built off the
+  critical path so it never blocks first paint.
+*/
+---
+
+<figure class="hv">
+  <canvas id="hv-canvas" width="320" height="240" role="img"
+          aria-label="Interactive simulation of dark-matter evidence"></canvas>
+  <div class="hv-toolbar">
+    <button class="hv-toggle" id="hv-ctl" type="button" aria-pressed="true">
+      <span class="hv-dot"></span><span id="hv-ctl-label">Dark matter: on</span>
+    </button>
+    <span class="hv-state" id="hv-state"></span>
+  </div>
+  <figcaption class="hv-cap" id="hv-cap"></figcaption>
+  <a class="hv-paper" id="hv-paper" target="_blank" rel="noopener noreferrer"></a>
+  <nav class="hv-rail" aria-label="Lines of evidence for dark matter">
+    <span class="hv-rail-k">Lines of evidence</span>
+    <ul id="hv-rail"></ul>
+  </nav>
+</figure>
+
+<style>
+  /* Reserved to its tallest state in JS and centering its contents, so the
+     figure is a fixed size (the centered intro never shifts between lines of
+     evidence) while the canvas stays one consistent size for all four. */
+  .hv { margin: 0; width: 100%; display: flex; flex-direction: column; justify-content: center; }
+  .hv canvas {
+    display: block; width: 100%; height: auto;
+    border-radius: var(--radius-md); background: var(--color-paper);
+  }
+  .hv-toolbar { display: flex; align-items: center; gap: 0.8rem; margin-top: 0.85rem; flex-wrap: wrap; }
+  .hv-toggle {
+    font-family: var(--font-mono); font-size: 12px; color: var(--color-ink);
+    background: var(--color-surface); border: 1px solid var(--color-line);
+    border-radius: 999px; padding: 0.45rem 0.9rem; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 0.55rem; transition: border-color 0.2s; user-select: none;
+  }
+  .hv-toggle:hover { border-color: var(--color-azure); }
+  .hv-toggle:focus-visible { outline: 2px solid var(--color-azure); outline-offset: 2px; }
+  .hv-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-orange); transition: background 0.2s, opacity 0.2s; }
+  .hv-toggle[aria-pressed="false"] .hv-dot { background: var(--color-muted); opacity: 0.45; }
+  .hv-state { font-family: var(--font-mono); font-size: 12px; color: var(--color-muted); }
+  /* Full-width caption (matches the canvas), natural height — caption / link /
+     rail stay tight, and the intro beside it centers against the real content. */
+  .hv-cap {
+    font-family: var(--font-display); font-size: 1rem; line-height: 1.55;
+    color: var(--color-ink); margin-top: 1rem;
+  }
+  .hv-cap b { font-weight: 700; color: var(--color-deep); }
+  .hv-paper {
+    display: inline-block; margin-top: 0.55rem;
+    font-family: var(--font-mono); font-size: 12px; color: var(--color-azure);
+    text-decoration: none; text-underline-offset: 3px; transition: color 0.18s;
+  }
+  /* arrow is inline-block so the hover underline covers only the words, not the icon */
+  .hv-paper::before { content: "↗"; color: var(--color-muted); font-size: 11px; display: inline-block; margin-right: 0.35rem; }
+  .hv-paper:hover { color: var(--color-azure-press); text-decoration: underline; }
+  .hv-paper:focus-visible { outline: 2px solid var(--color-azure); outline-offset: 3px; border-radius: 3px; }
+  .hv-rail {
+    margin-top: 1.4rem; border-top: 1px solid var(--color-line); padding-top: 1.1rem;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem;
+  }
+  .hv-rail-k {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--color-muted);
+  }
+  .hv-rail ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  /* Pill buttons — same surface/line/azure language as the toggle above, so
+     they read as clickable. Active = azure-tinted fill (no orange).
+     `:global(li)` because the list items are created in JS and so never carry
+     Astro's scope attribute — scoped `.hv-rail li` would not match them. */
+  .hv-rail :global(li) {
+    font-family: var(--font-mono); font-size: 11px; color: var(--color-deep);
+    background: var(--color-raised); border: 1px solid var(--color-line); border-radius: 999px;
+    padding: 0.32rem 0.62rem; white-space: nowrap; cursor: pointer; user-select: none;
+    transition: color 0.18s, border-color 0.18s, background 0.18s;
+  }
+  .hv-rail :global(li:hover) { border-color: var(--color-azure); background: var(--color-surface); }
+  .hv-rail :global(li:focus-visible) { outline: 2px solid var(--color-azure); outline-offset: 2px; }
+  .hv-rail :global(li.on) {
+    color: var(--color-deep); border-color: var(--color-azure);
+    background: color-mix(in srgb, var(--color-azure) 14%, var(--color-raised));
+  }
+</style>
+
+<script>
+  (() => {
+    const cv = document.getElementById('hv-canvas');
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    if (!ctx) return;
+
+    const C = { ink: '#16181D', muted: '#586070', deep: '#1C396A', azure: '#3976DB', orange: '#CB7034', line: 'rgba(20,28,40,.14)' };
+    const DM = (a) => `rgba(203,112,52,${a})`;     // dark matter — translucent orange
+    const GAS = (a) => `rgba(57,118,219,${a})`;    // visible matter / light — blue
+    const W = 320, H = 240;                        // logical drawing space (sims author against this)
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5);
+    // lighter cosmic-web precompute on small / touch devices
+    const small = Math.min(innerWidth, innerHeight) < 700 || matchMedia('(pointer:coarse)').matches;
+    const WEB_S = small ? 1.6 : 2.5, WEB_N = small ? 120000 : 300000;
+
+    function haze(x, y, R, a) {
+      const g = ctx.createRadialGradient(x, y, R * 0.08, x, y, R);
+      g.addColorStop(0, DM(a)); g.addColorStop(0.55, DM(a * 0.45)); g.addColorStop(1, DM(0));
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, R, 0, 6.3); ctx.fill();
+    }
+
+    // Fade the outer `m` px of a box into the paper bg on all four sides, so a
+    // full-frame sim (the cosmic web) dissolves softly into negative space
+    // instead of hitting hard rectangular edges — matching the galaxy's halo.
+    function feather(x, y, w, h, m) {
+      const P = 'rgba(229,231,226,';   // --color-paper
+      const band = (gx0, gy0, gx1, gy1, rx, ry, rw, rh) => {
+        const g = ctx.createLinearGradient(gx0, gy0, gx1, gy1);
+        g.addColorStop(0, P + '1)'); g.addColorStop(1, P + '0)');
+        ctx.fillStyle = g; ctx.fillRect(rx, ry, rw, rh);
+      };
+      band(0, y, 0, y + m, x, y, w, m);                 // top
+      band(0, y + h, 0, y + h - m, x, y + h - m, w, m); // bottom
+      band(x, 0, x + m, 0, x, y, m, h);                 // left
+      band(x + w, 0, x + w - m, 0, x + w - m, y, m, h); // right
+    }
+
+    // hi-dpi: backing store at device px, transform maps logical 320x240 -> canvas
+    function fit() {
+      const cssW = cv.clientWidth || 560, cssH = Math.round(cssW * H / W);
+      cv.style.height = cssH + 'px';
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      cv.width = Math.round(cssW * dpr); cv.height = Math.round(cssH * dpr);
+      ctx.setTransform(cv.width / W, 0, 0, cv.height / H, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+    }
+
+    // ── 0 · galaxy rotation ──────────────────────────────────────────
+    function simRotation() {
+      const cx = W * 0.5, cy = H * 0.5, rcore = 12, vflat = 1.6, cutoff = 140, incl = 0.58, N = 88, dt = 0.5;
+      const vcirc = (r) => r < rcore ? vflat * r / rcore : vflat;                          // flat curve (dark matter on)
+      const goff = (r) => r < rcore ? vflat * vflat * r / (rcore * rcore) : vflat * vflat * rcore / (r * r); // visible-only, 1/r^2
+      const stars = [];
+      for (let i = 0; i < N; i++) {
+        const r0 = rcore * 0.5 + Math.pow((i + 0.5) / N, 0.9) * (82 - rcore * 0.5), th = Math.random() * 6.28;
+        stars.push({ r0, px: Math.cos(th) * r0, py: Math.sin(th) * r0, vx: 0, vy: 0 });
+      }
+      let on = true;
+      function step() {
+        ctx.clearRect(0, 0, W, H);
+        if (on) haze(cx, cy, 98, 0.16);
+        ctx.fillStyle = C.deep; ctx.beginPath(); ctx.arc(cx, cy, 3, 0, 6.3); ctx.fill();
+        for (const s of stars) {
+          let r = Math.hypot(s.px, s.py) || 1e-3;
+          if (on) {
+            const th = Math.atan2(s.py, s.px), v = vcirc(r), w = v / r, nth = th + (reduce ? 0 : w * dt), nr = r + (s.r0 - r) * 0.04;
+            s.px = Math.cos(nth) * nr; s.py = Math.sin(nth) * nr; r = nr;
+            s.vx = -Math.sin(nth) * v; s.vy = Math.cos(nth) * v;   // carry orbital velocity so "off" inherits the real speed
+          } else {
+            const a = goff(r); s.vx += -a * s.px / r * dt; s.vy += -a * s.py / r * dt;
+            if (!reduce) { s.px += s.vx * dt; s.py += s.vy * dt; } r = Math.hypot(s.px, s.py);
+          }
+          if (r > cutoff) continue;                                // escaped — not rendered
+          ctx.fillStyle = GAS('.8'); ctx.beginPath(); ctx.arc(cx + s.px, cy + s.py * incl, 1.5, 0, 6.3); ctx.fill();
+        }
+      }
+      return {
+        title: 'galaxy rotation', type: 'toggle', label: 'Dark matter',
+        caption: "<b>Stars at the outer edges of galaxies move too fast.</b> If we only look at the visible mass in our galaxy, their gravitation effects are too weak to keep those outer stars from flying off into space. Those stars haven't gone anywhere, which means some invisible mass has to be holding the galaxy together.",
+        paper: { href: 'https://ui.adsabs.harvard.edu/abs/1970ApJ...159..379R', cite: 'Rubin & Ford (1970)' },
+        isOn: () => on, toggle() { on = !on; }, status: () => on ? 'galaxy is stable' : 'outer stars escaping…', step,
+      };
+    }
+
+    // ── 1 · colliding clusters (bullet) — restricted N-body + gas hydro ──
+    function simBullet() {
+      const dt = 0.18, GM = 900, csoft = 600, tsoft = 420, b = 8, vc = 0.46, sepHold = 72;
+      const sigDM = 20, sigGAS = 12, dispDM = 0.33, dispGAS = 0.14;
+      const nDM = 55, nGAS = 40, hVisc = 22, Cd = 0.08;          // per cluster; Cd = gas viscosity (shock)
+      let cores, DMv, GASv, tF, crossed, held, settling;
+      function spawn(arr, c, n, sig, disp) {
+        for (let i = 0; i < n; i++) arr.push({ x: c.x + gauss() * sig, y: c.y + gauss() * sig, vx: c.vx + gauss() * disp, vy: c.vy + gauss() * disp });
+      }
+      function coreAcc(i) { const j = 1 - i, dx = cores[j].x - cores[i].x, dy = cores[j].y - cores[i].y, d2 = dx * dx + dy * dy + csoft, inv = GM / (d2 * Math.sqrt(d2)); return [inv * dx, inv * dy]; }
+      function grav(x, y) { let ax = 0, ay = 0; for (const c of cores) { const dx = c.x - x, dy = c.y - y, d2 = dx * dx + dy * dy + tsoft, inv = GM / (d2 * Math.sqrt(d2)); ax += inv * dx; ay += inv * dy; } return [ax, ay]; }
+      function kick(a) { for (const p of a) { const [ax, ay] = grav(p.x, p.y); p.vx += ax * dt; p.vy += ay * dt; } }
+      function drift(a) { for (const p of a) { p.x += p.vx * dt; p.y += p.vy * dt; } }
+      function phys() {
+        if (held) return;
+        if (settling) {   // ease everything to a graceful stop at the held snapshot
+          let mx = 0; const damp = (a) => { for (const p of a) { p.vx *= 0.82; p.vy *= 0.82; p.x += p.vx * dt; p.y += p.vy * dt; mx = Math.max(mx, Math.abs(p.vx), Math.abs(p.vy)); } };
+          cores.forEach((c) => { c.vx *= 0.82; c.vy *= 0.82; c.x += c.vx * dt; c.y += c.vy * dt; }); damp(DMv); damp(GASv);
+          if (mx < 0.04) held = true; return;
+        }
+        let a0 = coreAcc(0), a1 = coreAcc(1); cores[0].vx += a0[0] * dt / 2; cores[0].vy += a0[1] * dt / 2; cores[1].vx += a1[0] * dt / 2; cores[1].vy += a1[1] * dt / 2;
+        cores[0].x += cores[0].vx * dt; cores[0].y += cores[0].vy * dt; cores[1].x += cores[1].vx * dt; cores[1].y += cores[1].vy * dt;
+        a0 = coreAcc(0); a1 = coreAcc(1); cores[0].vx += a0[0] * dt / 2; cores[0].vy += a0[1] * dt / 2; cores[1].vx += a1[0] * dt / 2; cores[1].vy += a1[1] * dt / 2;
+        kick(DMv); kick(GASv);                                   // every tracer feels both potentials
+        for (let i = 0; i < GASv.length; i++) for (let k = i + 1; k < GASv.length; k++) {   // gas: pairwise viscosity (shock)
+          const p = GASv[i], q = GASv[k], dx = p.x - q.x, dy = p.y - q.y, d = Math.hypot(dx, dy) || 1e-3;
+          if (d < hVisc) { const imp = Cd * (1 - d / hVisc) * (dt / 0.6), dvx = p.vx - q.vx, dvy = p.vy - q.vy; p.vx -= imp * dvx; p.vy -= imp * dvy; q.vx += imp * dvx; q.vy += imp * dvy; }
+        }
+        drift(DMv); drift(GASv); tF++;
+        const sep = Math.hypot(cores[1].x - cores[0].x, cores[1].y - cores[0].y);   // hold the "today" snapshot once just-separated
+        if (!crossed && sep < 30) crossed = true;
+        if (crossed && sep >= sepHold) settling = true;
+      }
+      function reset() {
+        const cx = W / 2, cy = H / 2;
+        cores = [{ x: cx - 44, y: cy - b, vx: vc, vy: 0 }, { x: cx + 44, y: cy + b, vx: -vc, vy: 0 }];
+        DMv = []; GASv = []; tF = 0; crossed = false; held = false; settling = false;
+        cores.forEach((c) => { spawn(DMv, c, nDM, sigDM, dispDM); spawn(GASv, c, nGAS, sigGAS, dispGAS); });
+        if (reduce) { let g = 0; while (!held && g++ < 4000) phys(); }
+      }
+      const R = 16, spr = document.createElement('canvas'); spr.width = spr.height = R * 2;   // cached DM blob sprite
+      { const s = spr.getContext('2d'), g = s.createRadialGradient(R, R, 0, R, R, R); g.addColorStop(0, 'rgba(203,112,52,0.13)'); g.addColorStop(1, 'rgba(203,112,52,0)'); s.fillStyle = g; s.fillRect(0, 0, R * 2, R * 2); }
+      reset();
+      function step() {
+        if (!reduce) phys();
+        ctx.clearRect(0, 0, W, H);
+        for (const p of DMv) ctx.drawImage(spr, p.x - R, p.y - R, R * 2, R * 2);
+        for (const p of GASv) {
+          let dens = 0; for (const q of GASv) { const d = Math.hypot(p.x - q.x, p.y - q.y); if (d < hVisc) dens += 1 - d / hVisc; }
+          const sh = Math.min(1, dens / 9); ctx.fillStyle = GAS((0.5 + 0.38 * sh).toFixed(3)); ctx.beginPath(); ctx.arc(p.x, p.y, 2.4, 0, 6.3); ctx.fill();
+        }
+        ctx.font = '8.5px "IBM Plex Mono",monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; const ly = H - 9;
+        ctx.fillStyle = C.orange; ctx.beginPath(); ctx.arc(10, ly, 3, 0, 6.3); ctx.fill(); ctx.fillStyle = C.muted; ctx.fillText('dark matter (invisible)', 17, ly);
+        ctx.fillStyle = C.azure; ctx.beginPath(); ctx.arc(160, ly, 2.8, 0, 6.3); ctx.fill(); ctx.fillStyle = C.muted; ctx.fillText('visible matter', 168, ly);
+        ctx.textBaseline = 'alphabetic';
+      }
+      return {
+        title: 'colliding clusters', type: 'replay', label: 'Replay collision ⟳',
+        caption: "<b>The Bullet Cluster.</b> The bullet cluster is actually a merger of two galaxy clusters that collided eons ago. From what we can tell, the visible matter interacted and piled up in the middle, but through gravitational lensing measurements we see that most of the masses of the clusters passsed through each other, untouched. That means that most of the mass in these clusters behaved like dark matter.",
+        paper: { href: 'https://arxiv.org/abs/astro-ph/0608407', cite: 'Clowe et al. (2006)' },
+        replay: reset, status: () => !crossed ? 'clusters fall together' : (held ? 'today — mass and visible matter lie apart' : 'visible matter shocks and stalls'), step,
+      };
+    }
+
+    // ── 2 · large-scale structure (cosmic web) — Zel'dovich density field ──
+    function simWeb() {
+      const S = WEB_S, WW = Math.round(W * S), WH = Math.round(H * S);       // higher internal resolution
+      const M = 70, Sref = 280 * S, N = WEB_N, D = 20 * S, GAMMA = 0.62, BR = Math.round(2 * S);
+      const paper = [229, 231, 226], orange = [203, 112, 52], bright = [245, 205, 150];
+      const modes = [];
+      for (let i = 0; i < M; i++) {
+        const ang = Math.random() * 6.283, mag = Math.exp(Math.log(1.6) + (Math.log(15) - Math.log(1.6)) * Math.random()), k = 2 * Math.PI * mag / Sref;
+        modes.push({ kx: k * Math.cos(ang), ky: k * Math.sin(ang), cx: Math.cos(ang), cy: Math.sin(ang), amp: Math.pow(mag, -2.075), ph: Math.random() * 6.283 });
+      }
+      const wx = new Float32Array(N), wy = new Float32Array(N), rdx = new Float32Array(N), rdy = new Float32Array(N), ixA = new Float32Array(N), iyA = new Float32Array(N);
+      let s2 = 0;
+      for (let i = 0; i < N; i++) {
+        const x = Math.random() * WW, y = Math.random() * WH; ixA[i] = x; iyA[i] = y;
+        let dx = 0, dy = 0; for (const m of modes) { const s = Math.sin(m.kx * x + m.ky * y + m.ph); dx += m.amp * m.cx * s; dy += m.amp * m.cy * s; }
+        rdx[i] = dx; rdy[i] = dy; s2 += dx * dx + dy * dy;
+      }
+      const sc = D / (Math.sqrt(s2 / N) || 1); for (let i = 0; i < N; i++) { wx[i] = ixA[i] + rdx[i] * sc; wy[i] = iyA[i] + rdy[i] * sc; }
+      const dens = new Float32Array(WW * WH);
+      for (let i = 0; i < N; i++) { const x = wx[i] | 0, y = wy[i] | 0; if (x >= 0 && x < WW && y >= 0 && y < WH) dens[y * WW + x]++; }
+      function blur(src, R) {
+        const tmp = new Float32Array(WW * WH), out = new Float32Array(WW * WH), cl = (v, m) => v < 0 ? 0 : (v >= m ? m - 1 : v);
+        for (let y = 0; y < WH; y++) { let a = 0; for (let x = -R; x <= R; x++) a += src[y * WW + cl(x, WW)]; for (let x = 0; x < WW; x++) { tmp[y * WW + x] = a / (2 * R + 1); a += src[y * WW + cl(x + R + 1, WW)] - src[y * WW + cl(x - R, WW)]; } }
+        for (let x = 0; x < WW; x++) { let a = 0; for (let y = -R; y <= R; y++) a += tmp[cl(y, WH) * WW + x]; for (let y = 0; y < WH; y++) { out[y * WW + x] = a / (2 * R + 1); a += tmp[cl(y + R + 1, WH) * WW + x] - tmp[cl(y - R, WH) * WW + x]; } }
+        return out;
+      }
+      const db = blur(dens, BR), sorted = Float32Array.from(db).sort(), mx = sorted[(sorted.length * 0.997) | 0] || 1;
+      const webCv = document.createElement('canvas'); webCv.width = WW; webCv.height = WH; const wctx = webCv.getContext('2d');
+      const img = wctx.createImageData(WW, WH);
+      for (let i = 0; i < WW * WH; i++) {
+        const t = Math.min(1, Math.pow(Math.min(1, db[i] / mx), GAMMA)), a = Math.min(1, t / 0.6), bb = Math.max(0, Math.min(1, (t - 0.6) / 0.4));
+        for (let c = 0; c < 3; c++) { let v = paper[c] * (1 - a) + orange[c] * a; img.data[i * 4 + c] = v * (1 - bb) + bright[c] * bb; } img.data[i * 4 + 3] = 255;
+      }
+      wctx.putImageData(img, 0, 0);
+      // visible matter: biased tracers — sampling particles already gives density^1, the extra exponent
+      // adds mild bias (~density^1.4) so every overdensity is populated while voids stay empty
+      const gIdx = []; let guard = 0;
+      while (gIdx.length < 1100 && guard < 150000) { guard++; const i = (Math.random() * N) | 0, xi = wx[i] | 0, yi = wy[i] | 0; if (xi >= 0 && xi < WW && yi >= 0 && yi < WH && Math.random() < Math.pow(Math.min(1, db[yi * WW + xi] / mx), 0.4)) gIdx.push(i); }
+      const offFrac = 0.18; let on = true, prog = reduce ? 1 : 0, drawn = -1;       // off: weak residual baryonic structure, not zero
+      const MX = 20, MY = 20, IW = W - 2 * MX, IH = H - 2 * MY;                     // inset box: keep the field off the frame edges
+      const mapX = (v) => MX + v * IW / W, mapY = (v) => MY + v * IH / H, dot = 1.5 * IW / W;
+      function step() {
+        prog += ((on ? 1 : 0) - prog) * (reduce ? 1 : 0.05);
+        if (drawn >= 0 && Math.abs(prog - drawn) < 0.004) return;
+        drawn = prog; ctx.clearRect(0, 0, W, H);
+        ctx.globalAlpha = prog; ctx.drawImage(webCv, MX, MY, IW, IH); ctx.globalAlpha = 1;   // dark-matter web — only when on
+        ctx.fillStyle = GAS('.72'); const f = offFrac + (1 - offFrac) * prog;                // matter concentrates onto the web
+        for (const i of gIdx) ctx.fillRect(mapX((ixA[i] + (wx[i] - ixA[i]) * f) / S), mapY((iyA[i] + (wy[i] - iyA[i]) * f) / S), dot, dot);
+        feather(MX, MY, IW, IH, 34);                                                          // dissolve edges into paper
+      }
+      return {
+        title: 'cosmic web', type: 'toggle', label: 'Dark matter',
+        caption: "<b>The cosmic web.</b> If we look out far enough into the sky we see that galaxies trace a web of filaments around giant empty voids. This large scale structure is only possible if there was significant dark matter in the early universe to provide structure. Without dark matter to provide the overdensities that turned gas into galaxies, it's likely we would not exist yet.",
+        paper: { href: 'https://ui.adsabs.harvard.edu/abs/1996Natur.380..603B', cite: 'Bond, Kofman & Pogosyan (1996)' },
+        isOn: () => on, toggle() { on = !on; }, status: () => on ? 'matter clumps into a web' : 'matter stays smooth', show() { drawn = -1; }, step,
+      };
+    }
+
+    // ── 3 · the CMB's third peak ─────────────────────────────────────
+    function simCMB() {
+      const P = { x: 42, y: 52, w: W - 62, h: 132 };   // centered band, off the top/bottom edges
+      const cp = [[0, 0.05, 0.05], [0.07, 0.16, 0.15], [0.18, 1.0, 1.0], [0.30, 0.33, 0.31], [0.42, 0.55, 0.53],
+      [0.54, 0.30, 0.25], [0.64, 0.53, 0.30], [0.74, 0.22, 0.17], [0.83, 0.31, 0.20], [0.92, 0.12, 0.09], [1, 0.05, 0.05]];
+      let on = true, dm = 1;
+      const PX = (x) => P.x + x * P.w, PY = (v) => P.y + P.h - v * P.h * 0.74;
+      function cr(pts, t) {
+        const n = pts.length - 1, seg = Math.min(n - 1, Math.floor(t * n)), a = t * n - seg, a2 = a * a, a3 = a2 * a;
+        const p0 = pts[Math.max(0, seg - 1)], p1 = pts[seg], p2 = pts[seg + 1], p3 = pts[Math.min(n, seg + 2)];
+        const f = (q0, q1, q2, q3) => 0.5 * ((2 * q1) + (-q0 + q2) * a + (2 * q0 - 5 * q1 + 4 * q2 - q3) * a2 + (-q0 + 3 * q1 - 3 * q2 + q3) * a3);
+        return [f(p0[0], p1[0], p2[0], p3[0]), f(p0[1], p1[1], p2[1], p3[1])];
+      }
+      function step() {
+        dm += ((on ? 1 : 0) - dm) * 0.07; ctx.clearRect(0, 0, W, H);
+        const pts = cp.map((c) => [c[0], c[2] + (c[1] - c[2]) * dm]);
+        ctx.strokeStyle = C.line; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(P.x, P.y - 6); ctx.lineTo(P.x, P.y + P.h); ctx.lineTo(P.x + P.w, P.y + P.h); ctx.stroke();
+        ctx.strokeStyle = DM('.35'); ctx.lineWidth = 1; ctx.setLineDash([2, 4]); ctx.beginPath(); ctx.moveTo(PX(0.64), P.y); ctx.lineTo(PX(0.64), P.y + P.h); ctx.stroke(); ctx.setLineDash([]);
+        ctx.strokeStyle = C.deep; ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.beginPath();
+        for (let i = 0; i <= 160; i++) { const [x, y] = cr(pts, i / 160), X = PX(x), Y = PY(y); i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); } ctx.stroke();
+        const y3 = cp[6][2] + (cp[6][1] - cp[6][2]) * dm;
+        ctx.fillStyle = C.orange; ctx.font = '12px "IBM Plex Mono",monospace'; ctx.textAlign = 'center'; ctx.fillText('✱', PX(0.64), PY(y3) - 7);
+        ctx.font = '9px "IBM Plex Mono",monospace'; ctx.fillStyle = C.muted; ctx.fillText('3rd peak', PX(0.64), P.y - 12);
+        ctx.textAlign = 'left'; ctx.fillText('power', P.x - 4, P.y - 12);
+        ctx.textAlign = 'right'; ctx.fillText('angular scale →', P.x + P.w, P.y + P.h + 15); ctx.textAlign = 'left';
+      }
+      return {
+        title: 'cosmic microwave background', type: 'toggle', label: 'Dark matter',
+        caption: "<b>An echo from the infant universe.</b> The strongest evidence for dark matter comes from observations of the cosmic microwave background radaition. This is a constant flat field of microwave photons from just after the recombination era in the early universe that permeat the sky in all directions. By looking at precise measurements of the variations in this flat field, we can figure out how much normal matter and dark matter there must have been in the early universe. This is encoded in the third peak of the power spectrum (plotted here), and it turns out that there was a lot of dark matter.",
+        paper: { href: 'https://arxiv.org/abs/1807.06209', cite: 'Planck Collaboration (2018)' },
+        isOn: () => on, toggle() { on = !on; }, status: () => on ? 'third peak matches dark matter' : 'third peak falls too low', step,
+      };
+    }
+
+    // ── controller ───────────────────────────────────────────────────
+    fit();
+    const ctlBtn = document.getElementById('hv-ctl'), ctlLabel = document.getElementById('hv-ctl-label'),
+      stateEl = document.getElementById('hv-state'), capEl = document.getElementById('hv-cap'),
+      paperEl = document.getElementById('hv-paper'), railEl = document.getElementById('hv-rail');
+
+    const factories = [simRotation, simBullet, simWeb, simCMB];
+    const titles = ['galaxy rotation', 'colliding clusters', 'cosmic web', 'cosmic microwave background'];
+    const sims = [];
+    const getSim = (i) => (sims[i] || (sims[i] = factories[i]()));
+    getSim(0); getSim(1); getSim(3);                                    // build all but the heavy web eagerly
+    const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1200));
+    idle(() => { if (!sims[2]) getSim(2); equalizeFigure(); });         // pre-build cosmic web off the critical path, then lock height
+
+    let active = 0, lastStatus = '', raf = 0;
+
+    titles.forEach((t, i) => {
+      const li = document.createElement('li'); li.textContent = t; li.tabIndex = 0; li.setAttribute('role', 'button');
+      li.addEventListener('click', () => select(i));
+      li.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(i); } });
+      railEl.appendChild(li);
+    });
+
+    function paintControl() {
+      const s = getSim(active);
+      if (s.type === 'toggle') {
+        ctlBtn.style.display = ''; ctlBtn.setAttribute('aria-pressed', String(s.isOn()));
+        ctlBtn.querySelector('.hv-dot').style.display = ''; ctlLabel.textContent = s.label + ': ' + (s.isOn() ? 'on' : 'off');
+      } else {
+        ctlBtn.setAttribute('aria-pressed', 'true'); ctlBtn.querySelector('.hv-dot').style.display = 'none'; ctlLabel.textContent = s.label;
+      }
+    }
+    ctlBtn.addEventListener('click', () => { const s = getSim(active); if (s.type === 'toggle') s.toggle(); else s.replay(); paintControl(); if (reduce) s.step(); });
+
+    function select(i) {
+      active = i; const s = getSim(i);
+      [...railEl.children].forEach((li, j) => li.classList.toggle('on', j === i));
+      capEl.innerHTML = s.caption;
+      paperEl.href = s.paper.href; paperEl.textContent = s.paper.cite;
+      paintControl();
+      ctx.clearRect(0, 0, W, H); if (s.show) s.show();
+      if (reduce) s.step();
+    }
+
+    // Reserve the figure at the height of its tallest state and let the flex
+    // column center the contents — fixed figure size (the centered intro never
+    // shifts), canvas size unchanged, slack split as breathing room top/bottom.
+    // Measured live, so it adapts to edited copy.
+    const figEl = capEl.closest('figure');
+    function equalizeFigure() {
+      if (!figEl) return;
+      figEl.style.minHeight = '';
+      // Only reserve on the desktop side-by-side layout, where it keeps the
+      // centered intro stable. When the figure stacks under the intro (mobile),
+      // a reserve would just add an empty gap above the canvas.
+      if (!matchMedia('(min-width: 768px)').matches) return;
+      if (!(sims[0] && sims[1] && sims[2] && sims[3])) return;
+      const cur = capEl.innerHTML;
+      let max = 0;
+      for (let i = 0; i < 4; i++) { capEl.innerHTML = sims[i].caption; max = Math.max(max, figEl.offsetHeight); }
+      capEl.innerHTML = cur; figEl.style.minHeight = max + 'px';
+    }
+
+    function loop() {
+      const s = getSim(active); s.step();
+      const st = s.status(); if (st !== lastStatus) { lastStatus = st; stateEl.textContent = st; }
+      raf = requestAnimationFrame(loop);
+    }
+
+    function onResize() { fit(); equalizeFigure(); const s = sims[active]; if (s) { if (s.show) s.show(); if (reduce) s.step(); } }
+    addEventListener('resize', onResize);
+    // re-fit once layout/fonts have settled
+    requestAnimationFrame(() => { fit(); const s = sims[active]; if (s && s.show) s.show(); if (reduce && s) s.step(); });
+
+    select(0);
+    if (reduce) { const s = getSim(active); s.step(); stateEl.textContent = s.status(); }
+    else raf = requestAnimationFrame(loop);
+
+    function cleanup() { cancelAnimationFrame(raf); removeEventListener('resize', onResize); }
+    document.addEventListener('astro:before-swap', cleanup, { once: true });   // client-side nav (if enabled)
+    addEventListener('pagehide', cleanup, { once: true });
+  })();
+</script>

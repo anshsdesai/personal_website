@@ -1,84 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Hanuman:wght@100..900&display=swap');
+/* Brand body + numbers (Google Fonts); Charter (display) is self-hosted below. */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
-
+/* Brand design tokens (single source of truth — generated from tokens.json) */
+@import "./tokens.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* @font-face { */
-  /* font-family: 'Hanuman';
-  /* Crucial: The path is relative to the *root* of your project's public folder */
-  /* src: url('/fonts/Hanuman-Regular.woff2') format('woff2');  */
-  /* font-weight: 400; Assuming the standard weight for this link */
-  /* font-style: normal; */
-  /* font-display: swap;  */
-/* } */ 
-/* --- ABOUT ME PAGE CUSTOM COLORS (CSS Variables) --- */
+/* ---- Charter (display) — self-hosted Bitstream Charter, see public/fonts ---- */
+@font-face {
+  font-family: 'Charter';
+  src: url('/fonts/charter-regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Charter';
+  src: url('/fonts/charter-italic.woff2') format('woff2');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Charter';
+  src: url('/fonts/charter-bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Charter';
+  src: url('/fonts/charter-bolditalic.woff2') format('woff2');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+
+/* Legacy semantic var names kept; values re-pointed at brand tokens (tokens.css).
+   This re-skins every page that consumes these vars without touching each page. */
 :root {
   /* Main Backgrounds */
-  --color-bg-main: #090e1aff; /* Dark Slate Blue */
-  --color-stars: #ffff; /* White */
-  --color-bg-secondary: #0F172A;          
-  --color-bg-accent: #e8edf7;
-  --color-bg-accentdark: #8699b8;
+  --color-bg-main: var(--color-paper);
+  --color-stars: var(--color-muted);
+  --color-bg-secondary: var(--color-surface);
+  --color-bg-accent: var(--color-deep);          /* primary button bg */
+  --color-bg-accentdark: var(--color-azure-press);
 
-  --color-border-highlight: #ffff;
+  --color-border-highlight: var(--color-azure);
 
-  --color-glow-main: rgb(148 163 184);
+  --color-glow-main: var(--color-azure);
 
-  /*Text Colors*/
-  --color-text-primary: #e8edf7; 
-  --color-text-title: #FFFF;         
-  --color-text-highlight: #FFFF;          
-  --color-text-headinglight: #F8FAFC;          
-  --color-text-headingdark: #abbdd6;       
-  --color-text-description: rgb(100 116 139);        
-  --color-text-tag: rgb(148 163 184);  
-  --color-text-buttontext:  #090e1aff;
-
+  /* Text Colors */
+  --color-text-primary: var(--color-ink);
+  --color-text-title: var(--color-deep);
+  --color-text-highlight: var(--color-deep);
+  --color-text-headinglight: var(--color-ink);
+  --color-text-headingdark: var(--color-muted);
+  --color-text-description: var(--color-muted);
+  --color-text-tag: var(--color-azure);
+  --color-text-buttontext: var(--color-paper);   /* text on deep button */
 
   /* --- Utility/Note Color --- */
-  --color-note-bg: #111827;               /* Very Dark Gray/Slate-900 */
-  --color-note-text: #6B7280;             /* Medium Gray (Tailwind Gray-500) */
+  --color-note-bg: var(--color-raised);
+  --color-note-text: var(--color-muted);
 
   /* Card Styling */
-  --color-card-bg: rgba(15, 23, 42, 0.65); /* Translucent Slate 900 */
-  --color-card-border: rgba(20, 17, 17, 0.1);
-  --color-card-hover-border: rgba(199, 210, 254, 0.4); /* Light Indigo on Hover */
+  --color-card-bg: var(--color-surface);
+  --color-card-border: var(--color-line);
+  --color-card-hover-border: var(--color-azure);
 
   /* Accent Colors */
-  --color-accent-strong: #6767e4ff; /* Strong Indigo */
-  --color-accent-soft: #a8a8f0ff; /* Soft Indigo */
-  
-  /* Specific Green for 'Now' Pulse */
-  --color-pulse-green: #20df66ff; /* Tailwind Green 500 equivalent */
+  --color-accent-strong: var(--color-azure);
+  --color-accent-soft: var(--color-azure-press);
+
+  /* Status green for 'Now' pulse */
+  --color-pulse-green: var(--color-green);
 
 
   
 
 
 }
-
-/* --- ABOUT ME PAGE CARD STYLING --- */
-.bento-card {
-  background-color: var(--color-card-bg);
-  border: 1px solid var(--color-card-border);
-  transition: all 0.3s ease;
-}
-
-.bento-card:hover {
-  border-color: var(--color-card-hover-border);
-  transform: translateY(-2px);
-  /* Using a generic shadow for visual lift on hover */
-  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.1), 0 4px 6px -2px rgba(139, 92, 246, 0.05); 
-}
-/* ----------------------------------------------------- */
-
-/* Move your custom animations here.
-   This ensures they are available to all utility classes
-*/
 
 @layer utilities {
   .animate-fade-in {
@@ -107,11 +103,10 @@
 
 @keyframes pulse-green {
     0%, 100% {
-        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.5); /* Start/End with a gentle shadow */
+        box-shadow: 0 0 0 0 rgba(31, 157, 87, 0.5); /* brand green, gentle */
     }
     50% {
-        /* Use the defined CSS variable for the green color */
-        box-shadow: 0 0 0 10px hsla(var(--color-pulse-green), 0); /* Expand and fade out */
+        box-shadow: 0 0 0 10px rgba(31, 157, 87, 0); /* expand and fade out */
     }
 }
 

@@ -2,14 +2,19 @@
 // import mod from 'astro/zod';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
-import { User, Clock, FileText, Github, Linkedin, Mail, BarChart2, Heart } from 'lucide-astro';
+import { Clock, Github, Linkedin, Mail } from 'lucide-astro';
 import InspireHepSVG from '../icons/inspireHEP.svg';
 import gscholarSVG from '../icons/Google_Scholar_logo.svg';
 import orcidSVG from '../icons/ORCID_iD.svg';
 
 // --- PLACEHOLDER DATA ---
-const bio = "Hello! I'm an experimental particle physicist focused on probing the nature of dark matter. I'm originally from Colorado, and I got my Bachelor's in Physics with minors in mathematics and computer science from the University of Colorado as a Boettcher Scholar. I then went on to a Master's program at Stony Brook University in New York for a year, where I got really excited about dark matter detectors. This interest in dark sector physics took me to University of Oregon to pursue my Ph.D in physics. Here I work with Tien-Tien Yu and the SENSEI collaboration to look for dark matter particles in our galaxy by using ultra-sensitive detectors placed deep underground. I also work with Eric Torrence and the FASER collaboration to search for dark matter produced in high energy collisions at the Large Hadron Collider. I have been lucky enough to be a part of some really talented teams of scientists that are driving new constraints in dark matter parameter space. I've authored or co-authored 10+ peer-reviewed publications, including articles in PRL and JHEP.";
-const now = "Currently leading the dark photon analysis for FASER, studying charge traps in SENSEI CCDs, working on the fourth dark matter search with SENSEI and writing my dissertation.";
+const bio = [
+  "Hello! I'm an experimental particle physicist hunting for dark matter. I grew up in Colorado and studied physics at the University of Colorado as a Boettcher Scholar, picking up minors in math and computer science along the way. I spent a year in a masters program at Stony Brook in New York, which is where I really got interested in working with dark matter detectors, and this brought me to the University of Oregon for my PhD.",
+  "Right now I work on two experiments at once. With Tien-Tien Yu and the SENSEI collaboration I look for dark matter floating around in our own galaxy, using ultra-sensitive silicon detectors deep underground. SENSEI revolutionized the search for sub-GeV dark matter, and we have been continuing to set new constraints on sub-GeV dark matter searches at SNOLAB. With Eric Torrence and the FASER collaboration I look for dark matter produced in the highest-energy collisions at the LHC. That same detector caught the very first collider neutrinos anyone has ever seen!",
+  "I'm not always behind a laptop. I spent a year at Fermilab in the CCD lab trying to understand the tiny backgrounds that hold these searches back, and I genuinely love getting hands-on with hardware. I also work on the theory side that tells experiments like ours where to point, including a public code package I wrote for calculating dark matter signals. All in all I've been lucky to author or co-author 10+ peer-reviewed papers with some very talented people.",
+];
+const now = "Finishing my dissertation at Oregon, leading FASER's next-generation dark photon search, studying charge traps in SENSEI's Skipper-CCDs, and working on analysis for our third science run at SNOLAB.";
+const outreach = "I care a lot about who gets to be a scientist. I've led demos and public talks at the Denver Museum of Nature & Science and the Oregon Museum of Science Industry, served on panels to answer the public's questions about physics through Fermilab's Saturday Morning Physics, and have brought hands-on physics to under-resourced schools in Boulder with PISEC. I also mentor undergrads and younger grad students at Oregon through the JUMP mentorship program. I want to keep science accessible to the public, and inspire people from all walks of life, particular those of underrepresented class and race to pursue their passions and become future scientists.";
 // const photoLink = "../img/uncropped_ansh.jpg";
 import AnshPhoto from "../img/cropped_ansh.jpeg";
 const timezone = "America/Eugene";
@@ -32,110 +37,99 @@ const otherInterests = [
 ---
 
 <BaseLayout title="About Me">
-  <!-- The main container uses the global background color variable -->
-  <div class="max-w-6xl mx-auto pt-16 pb-24 px-6 relative z-10 animate-fade-in-up" style={`background-color: hsl(var(--color-bg-main));`}>
-    
-    <h2 class="text-5xl font-extrabold mb-12 text-center text-[--color-text-title]">
-        About Me
-    </h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]">
-      
-      <!-- Bio Box (Span 2 Columns) -->
-      <div class="md:col-span-2 bento-card p-8 rounded-xl flex flex-col group">
-        <h3 class="text-2xl text-[--color-text-headingdark] font-bold mb-4 flex items-center align-top gap-2 group-hover:text-[--color-text-headinglight] transition-colors">
-            <User size="24"/> 
-            Abstract
-        </h3>
-        <p class="leading-relaxed text-base text-[--color-text-description] font-extralight group-hover:text-[--color-text-primary] transition-colors">
-            {bio}
-        </p>
+  <div class="max-w-5xl mx-auto pt-20 pb-28 px-6 relative z-10 animate-fade-in-up">
+
+    <!-- Masthead: oversized Charter title, left-aligned (editorial, not centered) -->
+    <header class="mb-14">
+      <h1 class="font-charter text-deep text-[clamp(2.75rem,7vw,4.5rem)] leading-[0.95] tracking-[-0.02em]">
+        Ansh Desai
+      </h1>
+    </header>
+
+    <!-- Lead: bio runs wide alongside a tall portrait. Asymmetric 5/3 split. -->
+    <div class="grid grid-cols-1 md:grid-cols-8 gap-x-10 gap-y-8 items-start">
+
+      <!-- Bio (wide), Charter drop-cap on the first beat, generous measure -->
+      <div class="md:col-span-5 space-y-5">
+        {bio.map((para, i) => (
+          <p class:list={["font-charter text-[1.15rem] leading-[1.75] text-ink", i === 0 && "first-letter:font-charter first-letter:text-deep first-letter:text-[3.4rem] first-letter:leading-[0.8] first-letter:float-left first-letter:pr-3 first-letter:pt-1"]}>
+            {para}
+          </p>
+        ))}
       </div>
 
-      <!-- Photo Box (Span 1 Column, linkable) -->
-      <!-- <a href={photoLink} target="_blank" class="md:col-span-1 bento-card p-6 rounded-xl overflow-hidden group relative flex flex-col items-center justify-center bg-cover bg-center" style={`background-image: url(${photoLink});`}>
-        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-all duration-300 flex items-center justify-center">
-            <div class="text-center">
-                <Image size="32" class="text-white mx-auto mb-2 opacity-80 group-hover:opacity-100 transition-opacity" />
-                <span class="text-white font-semibold text-lg">View Photo</span>
-            </div>
-        </div>
-      </a> -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-between">
-        <Image src={AnshPhoto} alt="A photo of Ansh." />
-      </div>
-      
-      <!-- "Now" Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col align-top group">
-        
-        <h3 class="text-xl font-bold mb-3 flex items-center gap-2 text-[--color-text-headingdark] group-hover:text-[--color-text-headinglight] transition-colors">
-          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            Now
-        </h3>
-        <p class="text-base text-[--color-text-description] font-extralight group-hover:text-[--color-text-primary] transition-colors">
-            {now}
-        </p>
-      </div>
-      
-      <!-- Timezone/Clock Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center text-center group">
-        <h3 class="text-xl text-[--color-text-headingdark] font-bold mb-3 flex items-center justify-center gap-2 group-hover:text-[--color-text-headinglight] transition-colors">
-            <Clock size="20" /> {timezone.split('/').pop().replace('_', ' ')}
-        </h3>
-        <div id="timezone-clock" class="text-4xl font-mono font-extrabold text-[--color-text-description] group-hover:text-[--color-text-primary] transition-colors">
-            --:--
-        </div>
-        <div id="timezone-date" class="text-sm mt-1 text-[--color-text-description] group-hover:text-[--color-text-primary] transition-colors">
-            --/--/----
-        </div>
-      </div>
+      <!-- Portrait (tall sidebar) -->
+      <figure class="md:col-span-3">
+        <Image src={AnshPhoto} alt="A photo of Ansh." class="rounded-lg w-full ring-1 ring-line" />
+      </figure>
+    </div>
 
-      <!-- Publications Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col align-top group">
-        <div>
-            <h3 class="text-xl font-bold mb-3 flex items-center gap-2 text-[--color-text-headingdark] group-hover:text-[--color-text-headinglight] transition-colors">
-                <Mail size="20" /> Publications
-            </h3>
-            <p class="text-base font-extralight mb-4 leading-relaxed text-[--color-text-description] group-hover:text-[--color-text-primary] transition-colors">
-                {publications.summary}
-            </p>
-        </div>
-        
-        <div class="flex gap-4 justify-center">
-            {publications.links.map((link) => (
-              <a href={link.url} aria-label={link.name} class="p-3 bg-slate-700 rounded-full transition-all duration-300 
-                        hover:scale-105 hover:bg-slate-600 shadow-lg hover:shadow-xl 
-                        hover:shadow-[--color-accent-strong]/20 ring-2 ring-transparent hover:ring-[--color-accent-strong]/50">
-            <link.icon class="w-8 h-8 " />
-            </a>
-            ))}
-        </div>
-      </div>
+    <!-- Now — a single emphasized strip, the one place orange earns its keep -->
+    <section class="mt-16 border-l-2 border-orange pl-5">
+      <h2 class="font-plex-mono text-xs uppercase tracking-[0.25em] text-orange mb-2 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-green animate-pulse-slow"></span> Now
+      </h2>
+      <p class="font-charter text-[1.05rem] leading-relaxed text-ink max-w-2xl">{now}</p>
+    </section>
 
-      <!-- Other Interests Box (Span 2 Columns) -->
-      <div class="md:col-span-2 bento-card p-6 rounded-xl align-top group ">
-        <h3 class="font-bold text-xl mb-3 flex items-center gap-2 text-[--color-text-headingdark] group-hover:text-[--color-text-headinglight] transition-colors">
-            <Heart size="20" /> Other Interests
-        </h3>
-        <ul class="list-disc list-inside space-y-2 text-base font-extralight pl-2 text-[--color-text-description] group-hover:text-[--color-text-primary] transition-colors">
-            {otherInterests.map(interest => (
-                <li class="pl-1">
-                    {interest}
-                </li>
-            ))}
+    <!-- Outreach & mentoring -->
+    <section class="mt-16 max-w-3xl">
+      <h2 class="font-plex-mono text-xs uppercase tracking-[0.25em] text-azure mb-4">Outreach &amp; mentoring</h2>
+      <p class="font-charter text-[1.1rem] leading-[1.75] text-ink">{outreach}</p>
+    </section>
+
+    <!-- Lower band: deliberately uneven — interests run wide, a slim meta rail beside -->
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-8 gap-x-10 gap-y-12">
+
+      <!-- Interests (wide) -->
+      <section class="md:col-span-5">
+        <h2 class="font-plex-mono text-xs uppercase tracking-[0.25em] text-azure mb-4">Beyond physics</h2>
+        <ul class="space-y-2.5 text-ink">
+          {otherInterests.map(interest => (
+            <li class="flex gap-3 leading-relaxed">
+              <span class="text-azure select-none">✱</span>
+              <span>{interest}</span>
+            </li>
+          ))}
         </ul>
-      </div>
+      </section>
 
-      <!-- Let's Connect (Socials) Box (Span 1 Column) -->
-      <div class="md:col-span-1 bento-card p-6 rounded-xl flex flex-col justify-center items-center text-center group">
-        <h3 class="font-bold text-xl mb-4 text-[--color-text-headingdark] group-hover:text-[--color-text-headinglight] transition-colors ">Let's Connect!</h3>
-        <div class="flex gap-4">
-          <a href="https://www.github.com/anshsdesai" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="Github"><Github size="20" /></a>
-          <a href="https://www.linkedin.com/in/anshsdesai" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="LinkedIn"><Linkedin size="20" /></a>
-          <a href="mailto:ansh.s.desai@proton.me" class="p-3 bg-slate-700 hover:bg-slate-600 rounded-full transition-colors duration-300 text-white" aria-label="Email"><Mail size="20" /></a>
+      <!-- Meta rail (narrow): clock, publications, connect stacked -->
+      <aside class="md:col-span-3 space-y-10">
+
+        <!-- Clock -->
+        <div>
+          <h2 class="font-plex-mono text-xs uppercase tracking-[0.25em] text-muted mb-2 flex items-center gap-2">
+            <Clock size="14" /> {timezone.split('/').pop().replace('_', ' ')}
+          </h2>
+          <div id="timezone-clock" class="font-plex-mono text-3xl font-medium text-deep tabular-nums">--:--</div>
+          <div id="timezone-date" class="font-plex-mono text-xs mt-1 text-muted">--/--/----</div>
         </div>
-      </div>
 
+        <!-- Publications -->
+        <div>
+          <h2 class="font-plex-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">Publications</h2>
+          <p class="text-sm leading-relaxed text-muted mb-3">{publications.summary}</p>
+          <div class="flex gap-3">
+            {publications.links.map((link) => (
+              <a href={link.url} aria-label={link.name} class="p-2.5 rounded-full bg-surface ring-1 ring-line transition-all hover:ring-azure hover:-translate-y-0.5">
+                <link.icon class="w-6 h-6" />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Connect -->
+        <div>
+          <h2 class="font-plex-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">Connect</h2>
+          <div class="flex gap-3 text-deep">
+            <a href="https://www.github.com/anshsdesai" class="p-2.5 rounded-full bg-surface ring-1 ring-line transition-all hover:ring-azure hover:text-azure hover:-translate-y-0.5" aria-label="Github"><Github size="18" /></a>
+            <a href="https://www.linkedin.com/in/anshsdesai" class="p-2.5 rounded-full bg-surface ring-1 ring-line transition-all hover:ring-azure hover:text-azure hover:-translate-y-0.5" aria-label="LinkedIn"><Linkedin size="18" /></a>
+            <a href="mailto:ansh.s.desai@proton.me" class="p-2.5 rounded-full bg-surface ring-1 ring-line transition-all hover:ring-azure hover:text-azure hover:-translate-y-0.5" aria-label="Email"><Mail size="18" /></a>
+          </div>
+        </div>
+
+      </aside>
     </div>
   </div>
 </BaseLayout>

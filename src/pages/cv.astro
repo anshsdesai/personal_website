@@ -4,38 +4,32 @@ import { FileText } from 'lucide-astro';
 ---
 
 <BaseLayout title="CV">
-  <div class="max-w-6xl mx-auto pt-10 px-6 relative z-10 animate-fade-in-up">
-    
-    <div class="bg-[--color-bg-main]/60 backdrop-blur-md  rounded-2xl p-6 md:p-8 shadow-2xl">
-      
+  <div class="max-w-5xl mx-auto pt-20 pb-28 px-6 relative z-10 animate-fade-in-up">
+
+    <div class="bg-surface border border-line rounded-2xl p-6 md:p-8">
+
       <!-- CV Header and Download Link -->
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <div>
-          <h2 class="text-3xl font-extrabold text-[--color-text-title] mb-1">Curriculum Vitae</h2>
-        </div>
-        
-        <a 
-          href="/assets/cv.pdf" 
-          download 
-          class="flex items-center gap-2 mt-4 sm:mt-0 px-4 py-2 bg-[--color-bg-accent] text-[--color-text-buttontext] rounded-lg font-bold hover:bg-[--color-bg-accentdark] transition-colors shadow-lg shadow-[--color-bg-accent]/30">
-          
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <h1 class="font-charter text-3xl text-deep">Curriculum Vitae</h1>
+
+        <a
+          href="/assets/cv.pdf"
+          download
+          class="flex items-center gap-2 px-4 py-2 bg-deep text-paper rounded-lg font-medium hover:bg-azure-press transition-colors">
           <FileText size="18" /> Download PDF
         </a>
       </div>
 
       <!-- PDF Embedding Container -->
-      <div class="w-full h-[800px] mt-6 rounded-lg overflow-hidden relative bg-[--color-bg-secondary]">
-        
-        <embed 
-          src="/assets/cv.pdf" 
-          type="application/pdf" 
+      <div class="w-full h-[800px] mt-6 rounded-lg overflow-hidden relative bg-raised border border-line">
+        <embed
+          src="/assets/cv.pdf"
+          type="application/pdf"
           class="w-full h-full"
           title="Curriculum Vitae Document"
         />
-        
-        
       </div>
-      
+
     </div>
   </div>
 </BaseLayout>

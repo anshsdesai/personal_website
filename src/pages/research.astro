@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { FileText } from 'lucide-astro';
 
 const projects = [
   {
@@ -38,33 +37,35 @@ const projects = [
 const publications = [
     {
         title: "Charge Trap Analysis in a SENSEI Skipper-CCD: Understanding Low-Energy Backgrounds in Rare-Event Searches",
-        journal: "arXiV Preprint",
+        journal: "arXiv Preprint",
         year: "2025",
         link: "https://arxiv.org/abs/2510.23336"
     },
     {
         title: "SENSEI: A Search for Diurnal Modulation in sub-GeV Dark Matter Scattering",
-        journal: "arXiV Preprint",
+        journal: "arXiv Preprint",
         year: "2025",
+        lead: true,
         link: "https://arxiv.org/abs/2510.20889"
     },
     {
         title: "Earth-scattering induced modulation in low-threshold dark matter experiments",
         journal: "Journal of High Energy Physics",
         year: "2025",
+        lead: true,
         link: "https://link.springer.com/article/10.1007/JHEP11(2025)042"
     },
 
     {
         title: "First Measurement of the Muon Neutrino Interaction Cross Section and Flux as a Function of Energy at the LHC with FASER",
-        journal: "Physics Review Letters",
+        journal: "Physical Review Letters",
         year: "2025",
         link: "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.134.211801"
     },
 
     {
         title: "SENSEI at SNOLAB: Single-Electron Event Rate and Implications for Dark Matter",
-        journal: "Physics Review Letters",
+        journal: "Physical Review Letters",
         year: "2025",
         link: "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.134.161002"
     },
@@ -78,7 +79,7 @@ const publications = [
 
     {
         title: "First Direct-Detection Results on Sub-GeV Dark Matter Using the SENSEI Detector at SNOLAB",
-        journal: "Physics Review Letters",
+        journal: "Physical Review Letters",
         year: "2025",
         link: "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.134.011804"
     },
@@ -92,7 +93,7 @@ const publications = [
 
     {
         title: "First Direct Observation of Collider Neutrinos with FASER at the LHC",
-        journal: "Physics Review Letters",
+        journal: "Physical Review Letters",
         year: "2024",
         link: "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.131.031801"
     },
@@ -100,60 +101,58 @@ const publications = [
 ---
 
 <BaseLayout title="Research">
-  <div class="max-w-5xl mx-auto pt-10 px-6 relative z-10 animate-fade-in-up">
-    <h2 class="text-5xl font-extrabold mb-12 text-center text-[--color-text-title]">
-        Research and Publications
-    </h2>
-    <!-- <p class="text-[--color-text-subheading] mb-10 pl-1">Exploring the particle nature of the universe.</p> -->
-    <div class="mt-16 border-t border-white/10 pt-10"></div>
-    <h3 class="text-2xl font-bold text-[--color-text-header] mb-2 pl-1">What do I work on?</h3>
-    <p class="text-[--color-text-primary] mb-10 pl-1">I'm interested in probing the microphysics of dark matter through new experimental techniques. We're pretty sure dark matter is out there, but so far we've only been able to detect its interactions with ordinary matter through gravity. The allowed range of parameter space for dark matter spans <em>90 orders of magnitude</em>. That means dark matter could be lighter than any known particle or heavier than the sun! We have good ideas of where in this huge range of possibilities dark matter could live, and the scientific community is working really hard to probe all of them. I'm interested in a class of models known as "Light Dark Matter", which are dark matter candidates less than the mass of a proton (1 GeV) but still large enough that they're particles, not waves. Dark matter in this range of masses would belong to an entire dark sector. This means there could be all sorts of different types of dark matter particles and force carriers (like a dark matter version of the photon). This means that you can look for dark matter particles in our galaxy, and you can try to make dark matter in colliders! I'm lucky enough to work on two experiments that are searching in both regimes. I work on the SENSEI experiment to look for light dark matter present in our galaxy, and I work on the FASER experiment searching for dark photons produced in high energy collisions at the Large Hadron Collider</p>
-    <div>
-        <a href="https://faser.web.cern.ch/" target="_blank" class="text-[--color-text-description] hover:text-[--color-text-primary] transition-colors underline"> Click here for more info on FASER</a>
-        </div>
-    <div>
-        <a class = "text-[--color-text-description] hover:text-[--color-text-primary] transition-colors underline" href="https://sensei-skipper.github.io/" target="_blank"> Click here for more info on SENSEI</a>
-    </div>
-    
+  <div class="max-w-5xl mx-auto pt-20 pb-28 px-6 relative z-10 animate-fade-in-up">
 
-    <div class="mt-16 border-t border-white/10 pt-10"></div>
-    <h2 class="text-2xl font-bold text-[--color-text-heading] mb-6">Projects</h2>
+    <header class="mb-14">
+      <h1 class="font-charter text-deep text-[clamp(2.5rem,6vw,4rem)] leading-[0.95] tracking-[-0.02em]">
+        Research &amp; Publications
+      </h1>
+    </header>
+
+    <section class="max-w-3xl">
+      <h2 class="font-charter text-2xl text-deep mb-3">What do I work on?</h2>
+      <p class="font-charter text-[1.1rem] leading-[1.75] text-ink">I'm interested in probing the microphysics of dark matter through new experimental techniques. We're pretty sure dark matter is out there, but so far we've only been able to detect its interactions with ordinary matter through gravity. The allowed range of parameter space for dark matter spans <em>90 orders of magnitude</em>. That means dark matter could be lighter than any known particle or heavier than the sun! We have good ideas of where in this huge range of possibilities dark matter could live, and the scientific community is working really hard to probe all of them. I'm interested in a class of models known as "Light Dark Matter", which are dark matter candidates less than the mass of a proton (1 GeV) but still large enough that they're particles, not waves. Dark matter in this range of masses would belong to an entire dark sector. This means there could be all sorts of different types of dark matter particles and force carriers (like a dark matter version of the photon). This means that you can look for dark matter particles in our galaxy, and you can try to make dark matter in colliders! I'm lucky enough to work on two experiments that are searching in both regimes. I work on the SENSEI experiment to look for light dark matter present in our galaxy, and I work on the FASER experiment searching for dark photons produced in high energy collisions at the Large Hadron Collider.</p>
+      <div class="mt-5 flex flex-wrap gap-x-6 gap-y-1">
+        <a href="https://faser.web.cern.ch/" target="_blank" class="text-azure hover:text-azure-press underline underline-offset-2 transition-colors">More on FASER →</a>
+        <a href="https://sensei-skipper.github.io/" target="_blank" class="text-azure hover:text-azure-press underline underline-offset-2 transition-colors">More on SENSEI →</a>
+      </div>
+    </section>
+
+    <hr class="my-16 border-line" />
+
+    <h2 class="font-charter text-2xl text-deep mb-8">Projects</h2>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-         
       {projects.map((proj) => (
-        <div class="bg-slate-900/40 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:border-white/30 transition-all hover:-translate-y-1 group">
-          <h3 class="text-xl font-bold text-[--color-text-subheading] mb-2 group-hover:text-[--color-text-highlight] transition-colors">{proj.title}</h3>
-          <span class="text-xs font-semibold text-[--color-text-tag] uppercase tracking-wider ">{proj.role}</span>
-          <p class="text-[--color-text-description] mt-4 text-sm leading-relaxed mb-6 group-hover:text-[--color-text-primary] transition-colors">
-            {proj.desc}
-          </p>
+        <div class="flex flex-col bg-surface border border-line p-6 rounded-xl transition-all hover:border-azure hover:-translate-y-1">
+          <span class="font-plex-mono text-[10px] font-medium text-azure uppercase tracking-[0.2em]">{proj.role}</span>
+          <h3 class="font-charter text-xl text-deep mt-1 mb-3">{proj.title}</h3>
+          <p class="text-ink text-sm leading-relaxed mb-6">{proj.desc}</p>
           <div class="flex flex-wrap gap-2 mt-auto">
             {proj.tags.map(tag => (
-              <span class="px-2 py-1 bg-white/5 text-[--color-text-tag] text-xs rounded-md border border-white/5">
-                {tag}
-              </span>
+              <span class="px-2 py-1 bg-raised text-muted text-xs rounded-md border border-line">{tag}</span>
             ))}
           </div>
         </div>
       ))}
     </div>
 
-    <div class="mt-16 border-t border-white/10 pt-10">
-      <h3 class="text-2xl font-bold text-[--color-text-title] mb-6">Selected Publications</h3>
-      <p class="text-[--color-text-description]">This was last updated in November of 2025. Check out the my publications using the links on the About Me page for more up to date information.</p>
-      <ul class="space-y-4">
-        {publications.map((pub) => (
-          <li class="flex gap-4 text-[--color-text-subheading] hover:bg-white/5 p-4 rounded-lg transition-colors border border-transparent hover:border-white/5">
-            <FileText class="shrink-0 text-[--color-text-tag]" size="20" />
-            <div>
-              <a href={pub.link} target='_blank' class="text-[--color-text-subheading] font-medium hover:text-[--color-text-highlight] cursor-pointer">
-                {pub.title}
-              </a>
-              <p class="text-sm mt-1 text-[--color-text-description]">{pub.journal}, {pub.year}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <hr class="my-16 border-line" />
+
+    <h2 class="font-charter text-2xl text-deep mb-3">Selected Publications</h2>
+    <p class="text-muted mb-8 text-sm">Last updated November 2025 — see the links on the About page for the current list. <span class="text-azure">Lead</span> marks papers I led or co-led.</p>
+    <ul class="divide-y divide-line border-t border-line">
+      {publications.map((pub) => (
+        <li>
+          <a href={pub.link} target='_blank' class="group flex gap-5 py-4 items-baseline transition-colors hover:bg-surface -mx-3 px-3 rounded-md">
+            <span class="font-plex-mono text-sm text-azure tabular-nums shrink-0 pt-0.5">{pub.year}</span>
+            <span>
+              <span class="font-charter text-[1.05rem] text-ink leading-snug group-hover:text-deep transition-colors">{pub.title}</span>
+              {pub.lead && <span class="ml-2 align-[0.1em] font-plex-mono text-[10px] uppercase tracking-[0.15em] text-azure border border-azure/40 rounded px-1.5 py-0.5 whitespace-nowrap">Lead</span>}
+              <span class="block text-sm mt-1 text-muted italic">{pub.journal}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
   </div>
 </BaseLayout>

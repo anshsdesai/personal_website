@@ -1,60 +1,52 @@
-import type { CollectionEntry } from 'astro:content'
-import type { Article, Person, WebSite, WithContext } from 'schema-dts'
+/* Site-wide constants + schema.org JSON-LD for Ansh Desai's site.
+   Single source of truth for the production URL, social profiles, and the
+   meta description used across <head>. Injected by BaseLayout. */
 
-import { projectMetaData } from './metaData'
+// Production domain. Every canonical / og:url / JSON-LD url derives from this
+// one constant — keep in sync with `site` in astro.config.mjs.
+export const SITE = 'https://anshdesai.me'
 
-export const mainWebsite: WithContext<WebSite> = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  url: import.meta.env.SITE,
-  name: 'Jesica - Personal Website',
-  description:
-    'From Figma to TypeScript, I craft seamless web and mobile experiences as a software engineer, based in Jakarta, Indonesia.',
-  inLanguage: 'en_US'
-}
+export const AUTHOR = 'Ansh Desai'
 
-export const projectWebsite: WithContext<WebSite> = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  url: `${import.meta.env.SITE}/projects/`,
-  name: 'Projects',
-  description: projectMetaData.description,
-  inLanguage: 'en_US'
-}
+export const DEFAULT_DESCRIPTION =
+  'Ansh Desai is a physics PhD candidate at the University of Oregon searching for light dark matter with the SENSEI and FASER experiments.'
 
-export const personSchema: WithContext<Person> = {
+// External identities — used for JSON-LD sameAs and anywhere we link out.
+export const SAME_AS = [
+  'https://orcid.org/0000-0002-5447-8304',
+  'https://inspirehep.net/authors/2789549',
+  'https://scholar.google.com/citations?user=_XUdxmMAAAAJ&hl=en',
+  'https://www.github.com/anshsdesai',
+  'https://www.linkedin.com/in/anshsdesai',
+]
+
+export const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Jesica',
-  url: 'https://jestsee.com',
-  // image: `${import.meta.env.SITE}${avatar.src}`,
-  sameAs: [
-    'https://www.twitter.com/jestseee',
-    'https://www.instagram.com/jest.see/',
-    'https://www.linkedin.com/in/jestsee/'
+  name: AUTHOR,
+  url: SITE,
+  email: 'mailto:ansh.s.desai@proton.me',
+  jobTitle: 'Physics PhD Candidate',
+  affiliation: {
+    '@type': 'CollegeOrUniversity',
+    name: 'University of Oregon',
+    url: 'https://www.uoregon.edu/',
+  },
+  knowsAbout: [
+    'Dark matter',
+    'Particle physics',
+    'Direct detection',
+    'Dark sectors',
   ],
-  jobTitle: 'Software engineer'
-  // worksFor: {
-  //   '@type': 'Organization',
-  //   name: 'Grafana',
-  //   url: 'https://grafana.com',
-  // },
+  sameAs: SAME_AS,
 }
 
-export function getProjectSchema(post: CollectionEntry<'projects'>) {
-  const articleStructuredData: WithContext<Article> = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: post.data.title,
-    url: `${import.meta.env.SITE}/projects/${post.id}/`,
-    image: {
-      '@type': 'ImageObject',
-      url: `${import.meta.env.SITE}${post.data.heroImage.src}/`
-    },
-    description: post.data.description,
-    // datePublished
-    publisher: personSchema,
-    author: personSchema
-  }
-  return articleStructuredData
+export const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  url: SITE,
+  name: AUTHOR,
+  description: DEFAULT_DESCRIPTION,
+  inLanguage: 'en-US',
+  author: { '@type': 'Person', name: AUTHOR, url: SITE },
 }
